@@ -1,0 +1,1 @@
+supabase database password: SBIffO4MQFGmd1mR
