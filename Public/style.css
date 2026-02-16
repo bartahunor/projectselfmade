@@ -278,7 +278,7 @@ h1{
 
 .about-app {
     padding: 120px 20px;
-    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    background: #351F5B;
     display: flex;
     justify-content: center;
 }
@@ -293,13 +293,14 @@ h1{
     font-weight: 800;
     margin-bottom: 40px;
     position: relative;
+    color: #ffffff;
 }
 
 .about-title::after {
     content: "";
     width: 80px;
     height: 4px;
-    background: #351F5B;
+    background: #ffffff;
     display: block;
     margin: 15px auto 0;
     border-radius: 10px;
@@ -308,12 +309,12 @@ h1{
 .about-text {
     font-size: 20px;
     line-height: 1.8;
-    color: #374151;
+    color: #ffffff;
     margin-bottom: 30px;
 }
 
 .highlight {
-    color: #351F5B;
+    color: #ffffff;
     font-weight: 601;
 }
 

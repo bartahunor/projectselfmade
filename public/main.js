@@ -60,3 +60,4 @@ document.querySelectorAll('.alap-right a').forEach(link => {
         document.querySelector('.alap-right').classList.remove('active');
     });
 });
+
