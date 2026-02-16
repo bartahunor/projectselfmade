@@ -186,7 +186,133 @@ app.delete('/api/forrasok/:id', async (req, res) => {
   res.json({ success: true })
 })
 
-/* ========================= */
+
+
+/* ======================= 
+   LOGIN ÉS REGISTER
+========================== */
+
+// REGISZTRÁCIÓ - adatok mentése az adatbázisba
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { username, email, password } = req.body
+
+    // Ellenőrzés: minden mező ki van-e töltve
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Minden mező kitöltése kötelező!'
+      })
+    }
+
+    // Email már létezik?
+    const existingEmail = await sql`
+      SELECT * FROM felhasznalok WHERE email = ${email}
+    `
+    
+    if (existingEmail.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Ez az email cím már használatban van!'
+      })
+    }
+
+    // Username már létezik?
+    const existingUsername = await sql`
+      SELECT * FROM felhasznalok WHERE felhasznalonev = ${username}
+    `
+    
+    if (existingUsername.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Ez a felhasználónév már foglalt!'
+      })
+    }
+
+    // Új felhasználó beszúrása az adatbázisba
+    const newUser = await sql`
+      INSERT INTO felhasznalok (felhasznalonev, email, jelszo_hash)
+      VALUES (${username}, ${email}, ${password})
+      RETURNING id, felhasznalonev, email
+    `
+
+    res.status(201).json({
+      success: true,
+      message: 'Sikeres regisztráció!',
+      user: {
+        id: newUser[0].id,
+        username: newUser[0].felhasznalonev,
+        email: newUser[0].email
+      }
+    })
+
+  } catch (error) {
+    console.error('Regisztrációs hiba:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Szerver hiba történt!'
+    })
+  }
+})
+
+// BEJELENTKEZÉS - adatok lekérése és összehasonlítása
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body
+
+    // Ellenőrzés
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email és jelszó megadása kötelező!'
+      })
+    }
+
+    // Felhasználó lekérése az adatbázisból
+    const users = await sql`
+      SELECT * FROM felhasznalok WHERE email = ${email}
+    `
+
+    if (users.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: 'Hibás email vagy jelszó!'
+      })
+    }
+
+    const user = users[0]
+
+    // Jelszó összehasonlítása
+    if (user.jelszo_hash !== password) {
+      return res.status(401).json({
+        success: false,
+        message: 'Hibás email vagy jelszó!'
+      })
+    }
+
+    // Sikeres bejelentkezés
+    res.status(200).json({
+      success: true,
+      message: 'Sikeres bejelentkezés!',
+      user: {
+        id: user.id,
+        username: user.felhasznalonev,
+        email: user.email
+      }
+    })
+
+  } catch (error) {
+    console.error('Bejelentkezési hiba:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Szerver hiba történt!'
+    })
+  }
+})
+
+/* ========================= 
+   SZERVER INDÍTÁS - MINDIG A VÉGÉN!
+========================= */
 
 app.listen(3000, () => {
   console.log('Server fut: http://localhost:3000')

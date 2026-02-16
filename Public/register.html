@@ -189,66 +189,7 @@
 
     </main>
 
-    <script>
-        const switchLink = document.getElementById('switch-link');
-        const formTitle = document.getElementById('form-title');
-        const formSubtitle = document.getElementById('form-subtitle');
-        const usernameContainer = document.getElementById('username-container');
-        const rememberContainer = document.getElementById('remember-container');
-        const submitButton = document.getElementById('submit-btn');
-        const switchText = document.getElementById('switch-text');
-        const authForm = document.getElementById('auth-form');
-        const emailInput = authForm.email;
-        const passwordInput = authForm.password;
-
-        let isLogin = true;
-
-        // Form váltás (Bejelentkezés <-> Regisztráció)
-        switchLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            isLogin = !isLogin;
-
-            if (isLogin) {
-                formTitle.textContent = 'Bejelentkezés';
-                formSubtitle.textContent = 'Add meg az adataidat a továbblépéshez';
-                usernameContainer.classList.add('hidden');
-                rememberContainer.classList.remove('hidden');
-                submitButton.textContent = 'Bejelentkezés';
-            } else {
-                formTitle.textContent = 'Regisztráció';
-                formSubtitle.textContent = 'Hozd létre fiókod, hogy hozzáférj minden tananyaghoz';
-                usernameContainer.classList.remove('hidden');
-                rememberContainer.classList.add('hidden');
-                submitButton.textContent = 'Regisztrálok';
-            }
-
-            switchText.innerHTML = isLogin ? 
-                'Még nincs fiókod? <a href="#" id="switch-link" class="text-primary font-bold hover:underline ml-1">Regisztrálj!</a>' :
-                'Már van fiókod? <a href="#" id="switch-link" class="text-primary font-bold hover:underline ml-1">Jelentkezz be!</a>';
-
-            document.getElementById('switch-link').addEventListener('click', switchLinkClick);
-        });
-
-        function switchLinkClick(e) {
-            e.preventDefault();
-            switchLink.click();
-        }
-
-        // **Bejelentkezés gomb működés**
-        authForm.addEventListener('submit', function(e){
-            e.preventDefault();
-
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            if(email !== "" && password !== ""){
-                // Ha van kitöltve mindkettő → Tasktype.html-re irányít
-                window.location.href = 'Tasktype.html';
-            } else {
-                alert("Kérlek töltsd ki az email és jelszó mezőket!");
-            }
-        });
-    </script>
+    <script src="/JS/login.js"></script>
 </body>
 
 </html>

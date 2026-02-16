@@ -24,7 +24,7 @@ async function includeHTML(id, file) {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  await includeHTML("header", "pieces/header.html");
+  await includeHTML("header", "/Pieces/header.html");
   
   setActiveMenuItem();
   // Várunk egy kicsit, hogy a HTML elemek tényleg betöltődjenek
