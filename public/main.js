@@ -1,4 +1,4 @@
-async function loadTantargyak() {
+/*async function loadTantargyak() {
   const res = await fetch('/api/tantargyak')
   const data = await res.json()
 
@@ -12,7 +12,7 @@ async function loadTantargyak() {
     ul.appendChild(li)
   })
 }
-loadTantargyak();
+loadTantargyak();*/
 
 async function includeHTML(id, file) {  
   const response = await fetch(file);

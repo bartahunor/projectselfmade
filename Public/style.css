@@ -1,19 +1,187 @@
-* {
+/*FRUZSI-fejléc*/
+html, body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    width: 100%;
+    min-height: 100%;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    background-color: #ffffff;
 }
 
-body {
-    background: #f8fafc; 
-    overflow-x: hidden;
+a{
+    text-decoration: none;
+    color: #351F5B;
+}
+
+h1{
+    font-family: 'Montserrat', sans-serif;
+}
+/* fejlec*/
+.fejlec{
+    display: flex;
+    background-color: #ffffff;
+    height: 100px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    position: fixed; 
+    top: 0; 
+    width: 100%;
+    overflow: hidden;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+    
+}
+.alap-left{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    width: auto;
+    gap: 15px;
+    padding-top: 3px;
+    color: #351F5B;
+    height: 100%;
+}
+
+.alap-right{
+    display: flex;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 20px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+
+}
+
+.item{
+    height: auto;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: auto;
+    margin-top: auto;    
+}
+
+.alap-right a{
+    text-decoration: none;
+    color: #351F5B;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+    padding: 6px 0;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.alap-right a::before,
+.alap-right a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: #351F5B;
+  transition: all 0.5s;
+}
+
+.alap-right a::before {
+  top: 0;
+  left: 0;
+}
+
+.alap-right a::after {
+  bottom: 0;
+  right: 0;
+}
+
+.alap-right a:hover::before {
+  width: 100%;
+  transition: width 0.25s ease-in-out;
+}
+
+.alap-right a:hover::after {
+  width: 100%;
+  transition: width 0.25s ease-in-out 0.25s;
+}
+
+.alap-right a.active {
+    color: white; 
+}
+
+.item0 img{
+    height: 70px;
+}
+
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: black;
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* MOBIL NÉZET */
+@media screen and (max-width: 768px) {
+    .fejlec {
+        padding: 10px 15px;
+    }
+    
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .alap-right {
+        position: fixed;
+        top: 80px;
+        left: -100%; 
+        width: 100%;
+        height: calc(100vh - 80px);
+        background-color: #95bb72;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 30px;
+        transform: none;
+        transition: left 0.3s ease;
+        gap: 30px;
+    }
+    
+    .alap-right.active {
+        left: 0; 
+    }
+    
+    .alap-right a {
+        font-size: 1.5rem;
+    }
+    
+    .item0 img {
+        height: 50px;
+        border-radius: 25px;
+    }
 }
 
 .hero {
     position: relative;
     width: 100%;
     min-height: 100vh;
+    margin-top: 100px;
 }
 
 .hero-bg {
@@ -40,6 +208,7 @@ body {
 .hero-content {
     position: relative;
     z-index: 2;
+    margin-top: 20px;
 }
 
 
@@ -70,9 +239,10 @@ body {
     background-color: #351F5B;
     color: white;
     font-weight: 600;
+    font-size: 30px;
     transition: 0.3s ease;
     box-shadow: 0 10px 25px rgba(99,102,241,0.3);
-    width: 40%;
+    width: 50%;
     height: 30%;
 }
 
@@ -106,6 +276,46 @@ body {
     100% { transform: translateY(0px); }
 }
 
+.about-app {
+    padding: 120px 20px;
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    display: flex;
+    justify-content: center;
+}
+
+.about-wrapper {
+    max-width: 800px;
+    text-align: center;
+}
+
+.about-title {
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.about-title::after {
+    content: "";
+    width: 80px;
+    height: 4px;
+    background: #351F5B;
+    display: block;
+    margin: 15px auto 0;
+    border-radius: 10px;
+}
+
+.about-text {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #374151;
+    margin-bottom: 30px;
+}
+
+.highlight {
+    color: #351F5B;
+    font-weight: 601;
+}
 
 /* HUnor feature cards*/
 .features{
@@ -176,45 +386,4 @@ body {
     width: 18px;
     height: 18px;
     flex-shrink: 0;
-}
-
-.about-app {
-    padding: 120px 20px;
-    background: linear-gradient(135deg, #f8fafc, #eef2ff);
-    display: flex;
-    justify-content: center;
-}
-
-.about-wrapper {
-    max-width: 800px;
-    text-align: center;
-}
-
-.about-title {
-    font-size: 42px;
-    font-weight: 800;
-    margin-bottom: 40px;
-    position: relative;
-}
-
-.about-title::after {
-    content: "";
-    width: 80px;
-    height: 4px;
-    background: #351F5B;
-    display: block;
-    margin: 15px auto 0;
-    border-radius: 10px;
-}
-
-.about-text {
-    font-size: 20px;
-    line-height: 1.8;
-    color: #374151;
-    margin-bottom: 30px;
-}
-
-.highlight {
-    color: #351F5B;
-    font-weight: 601;
 }
