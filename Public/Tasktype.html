@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Érettségi Felkészítő - Feladat kiválasztás</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#351F5B",
+                        primaryLight: "#4B2A7F",
+                        primaryDark: "#24123D",
+                        backgroundLight: "#F4F2F8",
+                        backgroundDark: "#140C22"
+                    },
+                    fontFamily: {
+                        display: ["Lexend"]
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="bg-backgroundLight dark:bg-backgroundDark min-h-screen text-slate-800 dark:text-slate-100 font-display">
+
+    <nav class="border-b border-primary/20 bg-white/80 dark:bg-primaryDark/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                    <span class="material-icons text-white text-sm">school</span>
+                </div>
+                <span class="font-bold text-xl tracking-tight text-primary">
+                    TUDÁSTÉR
+                </span>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-sm font-medium hover:text-primary transition-colors">
+                    Tananyagok
+                </a>
+                <a href="#" class="text-sm font-medium hover:text-primary transition-colors">
+                    Statisztika
+                </a>
+
+                <div
+                    class="h-9 w-9 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                    <span class="material-icons text-primary text-sm">person</span>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+
+        <!-- HEADER -->
+        <header class="text-center mb-14">
+            <h1 class="text-4xl font-bold text-primary mb-4">
+                Válaszd ki az érettségi paramétereit
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+                Állítsd össze a gyakorló feladatsort a tárgy, a szint és az évszám kiválasztásával.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+            <!-- SUBJECT -->
+            <section class="lg:col-span-5 space-y-6">
+
+                <h2 class="text-sm font-semibold uppercase tracking-widest text-primary/60">
+                    1 · Tantárgy
+                </h2>
+
+                <div class="grid grid-cols-2 gap-4">
+
+                    <button
+                        class="p-6 bg-white dark:bg-primaryDark border-2 border-primary rounded-2xl shadow-lg shadow-primary/10 transition-all hover:scale-[1.02]">
+                        <span class="material-icons text-primary text-4xl mb-3">calculate</span>
+                        <p class="font-semibold text-primary">Irodalom</p>
+                    </button>
+
+                    <button
+                        class="p-6 bg-white dark:bg-primaryDark border-2 border-transparent hover:border-primary/30 rounded-2xl transition-all">
+                        <span class="material-icons text-primary/40 text-4xl mb-3">history_edu</span>
+                        <p class="font-semibold">Történelem</p>
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <section class="lg:col-span-3 space-y-6">
+
+                <h2 class="text-sm font-semibold uppercase tracking-widest text-primary/60">
+                    2 · Szint
+                </h2>
+
+                <div class="space-y-4">
+
+                    <button
+                        class="w-full text-left p-6 bg-white dark:bg-primaryDark border-2 border-primary rounded-2xl shadow-md shadow-primary/10">
+                        <h3 class="font-bold text-primary text-lg">Középszint</h3>
+
+                    </button>
+
+                    <button
+                        class="w-full text-left p-6 bg-white dark:bg-primaryDark border-2 border-transparent hover:border-primary/30 rounded-2xl transition-all">
+                        <h3 class="font-bold text-lg">Emelt szint</h3>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+            <!-- YEAR -->
+            <section class="lg:col-span-4 space-y-6">
+
+                <h2 class="text-sm font-semibold uppercase tracking-widest text-primary/60">
+                    3 · Évszám
+                </h2>
+
+                <div
+                    class="bg-white dark:bg-primaryDark rounded-2xl border border-primary/20 overflow-hidden shadow-lg shadow-primary/5">
+
+                    <div class="h-[400px] overflow-y-auto p-4 space-y-3 scrollbar-hide">
+
+                        <button
+                            class="w-full flex justify-between items-center p-4 bg-primary text-white rounded-xl font-semibold shadow-md shadow-primary/30">
+                            <span>2024</span>
+                            <span class="material-icons text-sm">star</span>
+                        </button>
+
+                        <button
+                            class="w-full p-4 bg-primary/5 hover:bg-primary/10 rounded-xl transition-all font-medium">
+                            2023 
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <div class="mt-20 text-center">
+
+            <button
+                class="px-14 py-6 bg-primary hover:bg-primaryLight text-white rounded-full text-lg font-bold shadow-2xl shadow-primary/30 transition-all hover:-translate-y-1">
+                Gyakorlás indítása
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <div class="fixed top-0 right-0 -z-10 w-1/3 h-1/3 bg-primary/10 blur-[140px] rounded-full"></div>
+    <div class="fixed bottom-0 left-0 -z-10 w-1/4 h-1/4 bg-primary/10 blur-[120px] rounded-full"></div>
+
+</body>
+</html>
