@@ -106,24 +106,6 @@ body {
     100% { transform: translateY(0px); }
 }
 
-.about-app {
-    background: #e0e7ff; /* halvány lila háttér a hero után */
-    color: #111827;
-}
-
-.about-app h2 {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.about-app p {
-    max-width: 600px;
-    margin: 0 auto;
-    font-size: 18px;
-    color: #374151;
-}
-
 
 /* HUnor feature cards*/
 .features{
@@ -194,4 +176,45 @@ body {
     width: 18px;
     height: 18px;
     flex-shrink: 0;
+}
+
+.about-app {
+    padding: 120px 20px;
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    display: flex;
+    justify-content: center;
+}
+
+.about-wrapper {
+    max-width: 800px;
+    text-align: center;
+}
+
+.about-title {
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.about-title::after {
+    content: "";
+    width: 80px;
+    height: 4px;
+    background: #351F5B;
+    display: block;
+    margin: 15px auto 0;
+    border-radius: 10px;
+}
+
+.about-text {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #374151;
+    margin-bottom: 30px;
+}
+
+.highlight {
+    color: #351F5B;
+    font-weight: 601;
 }
