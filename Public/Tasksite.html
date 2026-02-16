@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Interface - Question View V2</title><!--BETÖLTÉS Tantárgy neve és évjárata-->
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1"
+        rel="stylesheet" />
+
+   <script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    primary: {
+                        DEFAULT: "#351F5B",
+                        50:  "#f3f1f7",
+                        100: "#e6e1ef",
+                        200: "#cfc3df",
+                        300: "#b8a5cf",
+                        400: "#9f86bf",
+                        500: "#8667af",
+                        600: "#6d4b96",
+                        700: "#53367a",
+                        800: "#3d255d",
+                        900: "#2a183f"
+                    },
+                    "background-light": "#f7f6f8",
+                    "background-dark": "#191022",
+                },
+                fontFamily: {
+                    display: ["Lexend"]
+                },
+                borderRadius: {
+                    DEFAULT: "0.25rem",
+                    lg: "0.5rem",
+                    xl: "0.75rem",
+                    full: "9999px"
+                },
+            },
+        },
+    }
+</script>
+
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #351F5B;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #351F5B;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display">
+
+
+    <div class="fixed top-0 left-0 w-full h-1.5 bg-primary/10 z-50">
+        <div
+            class="h-full bg-primary w-1/3 transition-all duration-500 shadow-[0_0_10px_rgba(115,17,212,0.5)]">
+        </div>
+    </div>
+
+
+    <header
+        class="sticky top-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 z-40">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+
+
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                    <span class="material-icons">school</span>
+                </div>
+                <div>
+                    <h1 class="text-lg font-semibold tracking-tight"><!--BETÖLTÉS Tantárgy neve-->
+
+                    </h1>
+                    <p
+                        class="text-xs text-primary/60 dark:text-primary/40 font-medium uppercase tracking-wider"><!--BETÖLTÉS Tantárgy évjárata szintje-->
+
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="flex items-center gap-8">
+
+                <button
+                    class="text-sm font-semibold text-primary/70 hover:text-primary dark:text-primary/60 dark:hover:text-primary transition-colors px-4 py-2 rounded-lg border border-transparent hover:border-primary/20">
+                    Vizsga befejezése
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+    <main class="flex-grow flex items-center justify-center p-6 md:p-12">
+
+        <div
+            class="max-w-7xl w-full bg-white dark:bg-slate-900/50 rounded-xl shadow-2xl shadow-primary/5 border border-primary/10 overflow-hidden flex flex-col md:flex-row h-[750px]">
+
+
+            <div
+                class="w-full md:w-1/2 bg-slate-50 dark:bg-slate-800/50 p-8 flex flex-col relative group">
+
+                <div class="flex items-center justify-between mb-4">
+                    <span
+                        class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest"> <!--BETÖLTÉS feladat sorszáma pl 1. feladat b rész-->
+                        Forrásanyag A/1
+                    </span>
+
+                    <div class="flex gap-2">
+                        <button
+                            class="p-2 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-primary/5 text-primary hover:bg-primary hover:text-white transition-all">
+                            <span class="material-icons text-sm">zoom_in</span>
+                        </button>
+
+                        <button
+                            class="p-2 bg-white dark:bg-slate-700 rounded-lg shadow-sm border border-primary/5 text-primary hover:bg-primary hover:text-white transition-all">
+                            <span class="material-icons text-sm">fullscreen</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    class="flex-grow relative rounded-xl overflow-hidden border border-primary/10 bg-white">
+                    <!--BETÖLTÉS ha van kép a feladathoz/ forrásanyag-->
+                </div>
+
+                <p class="mt-4 text-xs text-slate-500 dark:text-slate-400 italic">
+                    <!--BETÖLTÉS forrásányag magyarázata-->
+                </p>
+            </div>
+
+            <div
+                class="w-full md:w-1/2 p-8 md:p-12 flex flex-col h-full bg-white dark:bg-transparent">
+
+                <div class="mb-8">
+                    <div
+                        class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-4">
+                        <!--BETÖLTÉS feladat sorszám pl 10/30-->
+                    </div>
+
+                    <h2 class="text-2xl font-semibold leading-snug">
+                        <!--BETÖLTÉS feladathoz tartozó kérdés-->
+                    </h2>
+                </div>
+
+
+                <div
+                    class="flex-grow space-y-4 custom-scrollbar overflow-y-auto pr-2">
+
+                    <!--BETÖLTÉS feladat típusa pl kifejtős, választós be írós-->
+
+                </div>
+
+
+                <div
+                    class="mt-8 pt-8 border-t border-slate-100 flex items-center justify-between">
+
+                    <button
+                        class="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-primary bg-primary/10 hover:bg-primary/20 transition-all">
+                        <span class="material-icons text-sm">arrow_back</span>
+                        Előző
+                    </button>
+
+                    <button
+                        class="flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-white bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 transition-all">
+                        Következő
+                        <span class="material-icons text-sm">arrow_forward</span>
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
