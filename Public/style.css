@@ -123,3 +123,74 @@ body {
     font-size: 18px;
     color: #374151;
 }
+
+/* HUnor feature cards*/
+.features{
+    padding: 100px;
+    width: 100%;
+    height: auto;
+}
+.feature-card {
+     height: 100%;
+    width: auto;
+    padding: 40px;
+    padding-top: 0;
+    border-radius: 30px;
+    background: #e0e0e0;
+    box-shadow: 15px 15px 30px #bebebe,
+             -15px -15px 30px #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    transition: 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(57, 58, 138, 0.5);
+}
+
+.feature-card .card-border-top {
+    width: 60%;
+    height: 25px;
+    background: #351F5B;
+    margin: auto;
+    border-radius: 0px 0px 15px 15px;
+    margin-bottom: 20px;
+}
+
+.feature-card img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 50px;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.feature-details {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 50px;
+}
+
+.feature-details li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    align-items: flex-start;
+    color: rgb(104, 102, 102);
+    padding: 0px 10px 0px 10px;
+}
+
+.feature-details img {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
