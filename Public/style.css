@@ -319,15 +319,14 @@ h1{
 
 /* HUnor feature cards*/
 .features{
-    padding: 100px;
+    padding: 80px 20px;
     width: 100%;
     height: auto;
 }
 .feature-card {
-     height: 100%;
+    height: 100%;
     width: auto;
-    padding: 40px;
-    padding-top: 0;
+    padding: 0px 40px 0px 40px;
     border-radius: 30px;
     background: #e0e0e0;
     box-shadow: 15px 15px 30px #bebebe,
