@@ -44,6 +44,7 @@ function switchLinkClick(e) {
 
 // **Bejelentkezés gomb működés**
 // Form submit
+const API_URL = 'http://localhost:3000';
 authForm.addEventListener('submit', async function(e){
     e.preventDefault();
 
@@ -61,7 +62,7 @@ authForm.addEventListener('submit', async function(e){
     try {
         if(isLogin) {
             // ===== BEJELENTKEZÉS =====
-            const response = await fetch(`/api/auth/login`, {
+            const response = await fetch(`${API_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -95,7 +96,7 @@ authForm.addEventListener('submit', async function(e){
                 return;
             }
 
-            const response = await fetch(`/api/auth/register`, {
+            const response = await fetch(`${API_URL}/api/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import sql from './db.js'
+import bcrypt from 'bcryptjs'
 
 dotenv.config()
 
@@ -187,18 +188,20 @@ app.delete('/api/forrasok/:id', async (req, res) => {
 })
 
 
-
 /* ======================= 
    LOGIN ÉS REGISTER
 ========================== */
 
-// REGISZTRÁCIÓ - adatok mentése az adatbázisba
+// REGISZTRÁCIÓ
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { username, email, password } = req.body
 
-    // Ellenőrzés: minden mező ki van-e töltve
+    console.log('📥 Regisztráció kérés érkezett:', { username, email, password })
+
+    // Validációk
     if (!username || !email || !password) {
+      console.log('❌ Hiányzó mezők')
       return res.status(400).json({
         success: false,
         message: 'Minden mező kitöltése kötelező!'
@@ -211,6 +214,7 @@ app.post('/api/auth/register', async (req, res) => {
     `
     
     if (existingEmail.length > 0) {
+      console.log('❌ Email már létezik')
       return res.status(400).json({
         success: false,
         message: 'Ez az email cím már használatban van!'
@@ -223,18 +227,27 @@ app.post('/api/auth/register', async (req, res) => {
     `
     
     if (existingUsername.length > 0) {
+      console.log('❌ Username már létezik')
       return res.status(400).json({
         success: false,
         message: 'Ez a felhasználónév már foglalt!'
       })
     }
 
-    // Új felhasználó beszúrása az adatbázisba
+    // ✅ Jelszó hashelése
+    console.log('🔒 Jelszó hashelése elkezdődött...')
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+    console.log('✅ Hashelt jelszó:', hashedPassword)
+
+    // Most a hashelt verzió kerül az adatbázisba
     const newUser = await sql`
       INSERT INTO felhasznalok (felhasznalonev, email, jelszo_hash)
-      VALUES (${username}, ${email}, ${password})
+      VALUES (${username}, ${email}, ${hashedPassword})
       RETURNING id, felhasznalonev, email
     `
+
+    console.log('✅ Felhasználó létrehozva az adatbázisban!')
 
     res.status(201).json({
       success: true,
@@ -247,7 +260,7 @@ app.post('/api/auth/register', async (req, res) => {
     })
 
   } catch (error) {
-    console.error('Regisztrációs hiba:', error)
+    console.error('❌ Regisztrációs hiba:', error)
     res.status(500).json({
       success: false,
       message: 'Szerver hiba történt!'
@@ -255,10 +268,12 @@ app.post('/api/auth/register', async (req, res) => {
   }
 })
 
-// BEJELENTKEZÉS - adatok lekérése és összehasonlítása
+// BEJELENTKEZÉS
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body
+
+    console.log('🔑 Bejelentkezési kísérlet:', email)
 
     // Ellenőrzés
     if (!email || !password) {
@@ -268,12 +283,13 @@ app.post('/api/auth/login', async (req, res) => {
       })
     }
 
-    // Felhasználó lekérése az adatbázisból
+    // Felhasználó lekérése
     const users = await sql`
       SELECT * FROM felhasznalok WHERE email = ${email}
     `
 
     if (users.length === 0) {
+      console.log('❌ Felhasználó nem található')
       return res.status(401).json({
         success: false,
         message: 'Hibás email vagy jelszó!'
@@ -282,13 +298,19 @@ app.post('/api/auth/login', async (req, res) => {
 
     const user = users[0]
 
-    // Jelszó összehasonlítása
-    if (user.jelszo_hash !== password) {
+    // ✅ Jelszó összehasonlítása a hashelt verzióval
+    console.log('🔒 Jelszó ellenőrzése...')
+    const isPasswordValid = await bcrypt.compare(password, user.jelszo_hash)
+
+    if (!isPasswordValid) {
+      console.log('❌ Hibás jelszó')
       return res.status(401).json({
         success: false,
         message: 'Hibás email vagy jelszó!'
       })
     }
+
+    console.log('✅ Sikeres bejelentkezés!')
 
     // Sikeres bejelentkezés
     res.status(200).json({
@@ -302,7 +324,7 @@ app.post('/api/auth/login', async (req, res) => {
     })
 
   } catch (error) {
-    console.error('Bejelentkezési hiba:', error)
+    console.error('❌ Bejelentkezési hiba:', error)
     res.status(500).json({
       success: false,
       message: 'Szerver hiba történt!'
