@@ -38,12 +38,23 @@ app.post('/api/tantargyak', async (req, res) => {
 ========================= */
 
 app.get('/api/temakorok', async (req, res) => {
-  const rows = await sql`
-    select temakorok.*, tantargyak.nev as tantargy
-    from temakorok
-    join tantargyak on tantargyak.id = temakorok.tantargy_id
-    order by temakorok.nev
-  `
+  const { tantargy_id } = req.query
+
+  const rows = tantargy_id
+    ? await sql`
+        select temakorok.*, tantargyak.nev as tantargy
+        from temakorok
+        join tantargyak on tantargyak.id = temakorok.tantargy_id
+        where temakorok.tantargy_id = ${tantargy_id}
+        order by temakorok.nev
+      `
+    : await sql`
+        select temakorok.*, tantargyak.nev as tantargy
+        from temakorok
+        join tantargyak on tantargyak.id = temakorok.tantargy_id
+        order by temakorok.nev
+      `
+
   res.json(rows)
 })
 
@@ -301,6 +312,7 @@ app.post('/api/auth/login', async (req, res) => {
     // ✅ Jelszó összehasonlítása a hashelt verzióval
     console.log('🔒 Jelszó ellenőrzése...')
     const isPasswordValid = await bcrypt.compare(password, user.jelszo_hash)
+    console.log(user.hash)
 
     if (!isPasswordValid) {
       console.log('❌ Hibás jelszó')

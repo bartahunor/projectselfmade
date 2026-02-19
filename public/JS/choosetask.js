@@ -36,6 +36,7 @@ async function loadTantargyak() {
         "transition-all"
     );
     sub_button.dataset.subject = `${t.nev}`
+    sub_button.dataset.id = `${t.id}`
     sub_button.innerHTML = `<span class="material-icons text-primary text-4xl mb-3">${subjectIcons.get(t.nev)}</span>
                         <p class="font-semibold">${t.nev}</p>`
     ul.appendChild(sub_button)
@@ -43,6 +44,22 @@ async function loadTantargyak() {
 }
 loadTantargyak();
 
+async function loadTemakorok(tantargy_id) {
+  const res = await fetch(`${API_URL}/api/temakorok?tantargy_id=${tantargy_id}`)
+  const data = await res.json()
+
+  const ul = document.getElementById('topicSelect')
+
+  ul.innerHTML = '<option value="">-- Válassz témakört --</option>' 
+
+  data.forEach(t => {
+
+    const top_opt = document.createElement('option')
+    top_opt.value = `${t.nev}`
+    top_opt.innerText = `${t.nev}`
+    ul.appendChild(top_opt)
+  })
+}
 
 // Tantárgy választás
 document.getElementById('subject-list').addEventListener('click', (e) => {
@@ -58,6 +75,12 @@ document.getElementById('subject-list').addEventListener('click', (e) => {
     // Aktuális gomb kijelölése
     btn.classList.add("border-primary", "bg-primary/10", "shadow-lg", "shadow-primary/20");
     subject = btn.dataset.subject;
+
+    // Témakör lista ürítése és újratöltése
+    const topicSelect = document.getElementById('topicSelect');
+    topicSelect.innerHTML = '<option value="">-- Válassz témakört --</option>';
+    loadTemakorok(btn.dataset.id);
+
     checkReady();
 });
 
@@ -89,6 +112,8 @@ yearSelect.addEventListener("change", () => {
     checkReady();
 });
 
+
+
 topicSelect.addEventListener("change", () => {
     if (topicSelect.value) {
         // Ha témakört választottunk, töröljük az évszám választást
@@ -100,6 +125,8 @@ topicSelect.addEventListener("change", () => {
     }
     checkReady();
 });
+
+
 
 function checkReady() {
     const isReady = subject && level && (selectedYear || selectedTopic);
