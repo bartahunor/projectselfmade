@@ -61,6 +61,23 @@ async function loadTemakorok(tantargy_id) {
   })
 }
 
+async function loadEvek() {
+    const res = await fetch(`${API_URL}/api/ev`)
+    const data = await res.json()
+
+    const ul = document.getElementById('yearSelect')
+
+    ul.innerHTML = '<option value="">-- Válassz évszámot --</option>' 
+    data.forEach(e => {
+
+    const year_opt = document.createElement('option')
+    year_opt.value = `${e.ev}`
+    year_opt.innerText = `${e.ev}`
+    ul.appendChild(year_opt)
+  })
+
+}
+loadEvek();
 // Tantárgy választás
 document.getElementById('subject-list').addEventListener('click', (e) => {
     // Megkeressük a legközelebbi .subjectBtn elemet

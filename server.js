@@ -69,7 +69,22 @@ app.post('/api/temakorok', async (req, res) => {
 
   res.json(result[0])
 })
-
+/* =========================
+   ÉVEK
+========================= */
+app.get('/api/ev', async (req, res) => {
+  try {
+    const rows = await sql`
+      SELECT DISTINCT ev
+      FROM ev
+      ORDER BY ev
+    `
+    res.json(rows)
+  } catch (error) {
+    console.error('❌ Év lekérési hiba:', error)
+    res.status(500).json({ success: false, message: 'Szerver hiba!' })
+  }
+})
 /* =========================
    FORRÁSOK
 ========================= */
