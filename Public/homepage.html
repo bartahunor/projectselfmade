@@ -43,6 +43,10 @@
         body {
             font-family: 'Lexend', sans-serif;
         }
+
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
@@ -81,7 +85,7 @@
                     Készülj fel hatékonyan az érettségi követelményekre szakértői tananyagokkal, interaktív feladatokkal és azonnali visszajelzéssel.
                 </p>
 <div class="flex flex-wrap gap-4 pt-4">
-<button class="border-2 border-primary/20 text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary/5 transition-all">
+<button class="border-2 border-primary/20 text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary/5 transition-all" onclick="location.href='#tantargyak'">
                         Böngéssz a tárgyak között
                     </button>
 </div>
@@ -94,9 +98,9 @@
 </div>
 </div>
 <div class="order-1 lg:order-2">
-<div class="relative w-full aspect-square lg:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-primary/5">
+<div class="relative w-full aspect-square lg:aspect-[4/4] rounded-3xl overflow-hidden shadow-2xl bg-primary/5">
 <div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent"></div>
-<img alt="Happy student studying with laptop" class="w-full h-full object-cover" data-alt="Illustration of a focused student studying online" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWLFgDBX_nGDcG0eJqMro4qNpaSkdS6xaSkLxuFeNFowol-jzhuBu-D_hhGw65ltJUDtLIQFmVNrYjKVu2lXNDE642D1CvxmMDlzY6djBNlkdqL4R7LGGyvqMwCMCfB2e7BUx6VWUbj9ey9I4ZRKCCFWuQdMFuhefuoEXxIOh8J8n3KBFxENjrPoSCGIYuxqM1Q7eXlPIUqzErQ5hl4E5meFF-k3f7X9vs7ubA4BtlJ0ZT87J94KWIrdbUVsy-lM6l7r6m0yYmUnU"/>
+<img alt="Happy student studying with laptop" class="w-full h-full object-cover" data-alt="Illustration of a focused student studying online" src="Pictures/picture1.avif">
 <!-- Floating UI Card Decoration -->
 <div class="absolute bottom-8 flex items-center gap-4 ">
 <div class=" p-2 rounded-lg">
@@ -150,7 +154,7 @@
 <div class="max-w-7xl mx-auto">
 <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
 <div class="max-w-xl">
-<h2 class="text-4xl font-black mb-4">Tantárgyaink:</h2>
+<h2 class="text-4xl font-black mb-4" id="tantargyak">Tantárgyaink:</h2>
 <p class="text-slate-500">Minden tananyagunk az Oktatási Hivatal által közzétett érettségi feladatok követelményeit tartalmazza.</p>
 </div>
 <a class="text-primary font-bold flex items-center gap-2 group" href="#">
@@ -197,13 +201,8 @@
 <section class="py-24 bg-primary/5 px-6">
 <div class="max-w-7xl mx-auto">
 <div class="text-center mb-16">
-<h2 class="text-4xl font-black mb-4">Diákjaink mondták</h2>
+<h2 class="text-4xl font-black mb-4">Felhasználóink mondták</h2>
 <div class="flex justify-center gap-1 text-amber-400">
-<span class="material-symbols-outlined fill-1">star</span>
-<span class="material-symbols-outlined fill-1">star</span>
-<span class="material-symbols-outlined fill-1">star</span>
-<span class="material-symbols-outlined fill-1">star</span>
-<span class="material-symbols-outlined fill-1">star</span>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -257,7 +256,7 @@
                 Csatlakozz több ezer sikeres érettségizőhöz és érd el az álmaid.
             </p>
 <div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-<button class="bg-white text-primary px-10 py-4 rounded-xl font-bold text-xl hover:scale-105 transition-transform">
+<button class="bg-white text-primary px-10 py-4 rounded-xl font-bold text-xl hover:scale-105 transition-transform" onclick="location.href='register.html'">
                     Regisztráció
                 </button>
 </div>
@@ -283,21 +282,21 @@
 </div>
 </div>
 <div>
-<h4 class="text-white font-bold mb-6">Tantárgyak</h4>
+<h4 class="text-white font-bold mb-6 ">Tantárgyak</h4>
 <ul class="flex flex-col gap-3">
-<li><a class="hover:text-primary transition-colors" href="#">Matematika</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Történelem</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Magyar nyelv</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Biológia</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Angol</a></li>
+<li><a class="hover:text-primary transition-colors" href="#tantargyak">Matematika</a></li>
+<li><a class="hover:text-primary transition-colors" href="#tantargyak">Történelem</a></li>
+<li><a class="hover:text-primary transition-colors" href="#tantargyak">Magyar nyelv</a></li>
+<li><a class="hover:text-primary transition-colors" href="#tantargyak">Biológia</a></li>
+<li><a class="hover:text-primary transition-colors" href="#tantargyak">Angol</a></li>
 </ul>
 </div>
 <div>
 <h4 class="text-white font-bold mb-6">Jogi nyilatkozat</h4>
 <ul class="flex flex-col gap-3">
-<li><a class="hover:text-primary transition-colors" href="#">ÁSZF</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Adatkezelés</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Sütik</a></li>
+<li><a class="hover:text-primary transition-colors" href="data.html">ÁSZF</a></li>
+<li><a class="hover:text-primary transition-colors" href="data.html">Adatkezelés</a></li>
+<li><a class="hover:text-primary transition-colors" href="data.html">Sütik</a></li>
 </ul>
 </div>
 </div>
