@@ -56,7 +56,7 @@ async function loadTemakorok(tantargy_id) {
   data.forEach(t => {
 
     const top_opt = document.createElement('option')
-    top_opt.value = `${t.nev}`
+    top_opt.value = `${t.id}`
     top_opt.innerText = `${t.nev}`
     ul.appendChild(top_opt)
   })
@@ -80,10 +80,27 @@ async function loadEvek() {
 }
 loadEvek();
 
-async function taskParamsSender(subid, level, year) {
+async function taskParamsSenderYear(subid, level, year) {
     const res = await fetch(`${API_URL}/api/feladatok/szuro_ev?tantargy_id=${subid}&szint=${level}&ev=${year}`)
     if (!year) {
         console.warn('Év nincs kiválasztva, nem küldjük el a kérést.');
+        return;
+    }
+    if (!res.ok) {
+        const err = await res.json()
+        console.error('Hiba a szűrésnél:', err)
+        return
+    }
+
+    const data = await res.json()
+    console.log('Szűrési eredmény:', data)
+    return data
+}
+
+async function taskParamsSenderTopic(subid, level, topicId) {
+    const res = await fetch(`${API_URL}/api/feladatok/szuro_temakor?tantargy_id=${subid}&szint=${level}&temakor_id=${topicId}`)
+    if (!topicId) {
+        console.warn('Témakör nincs kiválasztva, nem küldjük el a kérést.');
         return;
     }
     if (!res.ok) {
@@ -184,7 +201,9 @@ startBtn.addEventListener("click", () => {
     if (startBtn.disabled) return; 
     // Csak ha év van kiválasztva
     if (selectedYear) {
-        taskParamsSender(sub_id, level, selectedYear);
+        taskParamsSenderYear(sub_id, level, selectedYear);
+    } else if (selectedTopic) {
+        taskParamsSenderTopic(sub_id, level, selectedTopic);  // ← selectedTopic most már id
     } else {
         console.log('Témakör alapú szűrés még nincs implementálva');
     }

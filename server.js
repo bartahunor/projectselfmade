@@ -232,6 +232,41 @@ app.get('/api/feladatok/szuro_ev', async (req, res) => {
   res.json(rows)
 })
 
+app.get('/api/feladatok/szuro_temakor', async (req, res) => {
+  const { tantargy_id, szint, temakor_id } = req.query
+
+  if (!tantargy_id || !szint || !temakor_id) {
+    return res.status(400).json({ error: 'tantargy_id, szint és temakor_id paraméterek kötelezők' })
+  }
+
+  const rows = await sql`
+    select
+      feladatok.*,
+      forrasok.szoveg as forras_szoveg,
+      temakorok.nev as temakor,
+      tantargyak.nev as tantargy,
+      ev.ev as ev,
+      ev.szint as szint
+    from feladatok
+    left join forrasok on forrasok.id = feladatok.forras_id
+    join temakorok on temakorok.id = feladatok.temakor_id
+    join tantargyak on tantargyak.id = temakorok.tantargy_id
+    join ev on ev.id = feladatok.ev_id
+    where tantargyak.id = ${tantargy_id}
+      and ev.szint = ${szint}
+      and temakorok.id = ${temakor_id}
+    order by feladatok.id desc
+  `
+
+  lastFilterResult = {
+    timestamp: new Date().toISOString(),
+    params: { tantargy_id, szint, temakor_id },
+    data: rows
+  }
+
+  res.json(rows)
+})
+
 // Utolsó szűrési eredmény visszaadása
 app.get('/api/feladatok/utolso', (req, res) => {
   if (!lastFilterResult) {

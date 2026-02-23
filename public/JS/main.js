@@ -1,19 +1,3 @@
-/*async function loadTantargyak() {
-  const res = await fetch('/api/tantargyak')
-  const data = await res.json()
-
-  const ul = document.getElementById('lista')
-  ul.innerHTML = ''
-
-  data.forEach(t => {
-    const li = document.createElement('li')
-    li.textContent = t.nev
-    console.log(t)
-    ul.appendChild(li)
-  })
-}
-loadTantargyak();*/
-
 async function includeHTML(id, file) {  
   const response = await fetch(file);
   if (response.ok) {
@@ -25,6 +9,7 @@ async function includeHTML(id, file) {
 
 window.addEventListener("DOMContentLoaded", async () => {
   await includeHTML("header", "/Pieces/header.html");
+  await includeHTML("footer", "/Pieces/footer.html");
   
   setActiveMenuItem();
   // Várunk egy kicsit, hogy a HTML elemek tényleg betöltődjenek
