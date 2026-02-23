@@ -6,6 +6,7 @@ let subject = null;
 let level = null;
 let selectedYear = null;
 let selectedTopic = null;
+let sub_id = null;
 
 const API_URL = 'http://localhost:3000';
 async function loadTantargyak() {
@@ -78,6 +79,24 @@ async function loadEvek() {
 
 }
 loadEvek();
+
+async function taskParamsSender(subid, level, year) {
+    const res = await fetch(`${API_URL}/api/feladatok/szuro_ev?tantargy_id=${subid}&szint=${level}&ev=${year}`)
+    if (!year) {
+        console.warn('Év nincs kiválasztva, nem küldjük el a kérést.');
+        return;
+    }
+    if (!res.ok) {
+        const err = await res.json()
+        console.error('Hiba a szűrésnél:', err)
+        return
+    }
+
+    const data = await res.json()
+    console.log('Szűrési eredmény:', data)
+    return data
+}
+
 // Tantárgy választás
 document.getElementById('subject-list').addEventListener('click', (e) => {
     // Megkeressük a legközelebbi .subjectBtn elemet
@@ -96,6 +115,7 @@ document.getElementById('subject-list').addEventListener('click', (e) => {
     // Témakör lista ürítése és újratöltése
     const topicSelect = document.getElementById('topicSelect');
     topicSelect.innerHTML = '<option value="">-- Válassz témakört --</option>';
+    sub_id = btn.dataset.id;
     loadTemakorok(btn.dataset.id);
 
     checkReady();
@@ -162,6 +182,12 @@ function checkReady() {
 // Start gomb kattintás
 startBtn.addEventListener("click", () => {
     if (startBtn.disabled) return; 
+    // Csak ha év van kiválasztva
+    if (selectedYear) {
+        taskParamsSender(sub_id, level, selectedYear);
+    } else {
+        console.log('Témakör alapú szűrés még nincs implementálva');
+    }
 
     let choiceText = selectedYear ? `Évszám: ${selectedYear}` : `Témakör: ${selectedTopic}`;
     
@@ -171,6 +197,8 @@ startBtn.addEventListener("click", () => {
         year: selectedYear,
         topic: selectedTopic
     });
+
+    window.location.href = 'Tasksite.html';
 
     alert(`Kiválasztva:\n\nTantárgy: ${subject}\nSzint: ${level}\n${choiceText}`);
     

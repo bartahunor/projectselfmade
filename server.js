@@ -193,6 +193,53 @@ app.get('/api/feladatok/ev/:ev/szint/:szint/temakor/:temakor_id', async (req, re
   res.json(rows)
 })
 
+//kombinált szűrés: év + szint + tantárgy és annak a visszahívása
+let lastFilterResult = null
+
+app.get('/api/feladatok/szuro_ev', async (req, res) => {
+  const { tantargy_id, szint, ev } = req.query
+
+  if (!tantargy_id || !szint || !ev) {
+    return res.status(400).json({ error: 'tantargy_id, szint és ev paraméterek kötelezők' })
+  }
+
+  const rows = await sql`
+    select
+      feladatok.*,
+      forrasok.szoveg as forras_szoveg,
+      temakorok.nev as temakor,
+      tantargyak.nev as tantargy,
+      ev.ev as ev,
+      ev.szint as szint
+    from feladatok
+    left join forrasok on forrasok.id = feladatok.forras_id
+    join temakorok on temakorok.id = feladatok.temakor_id
+    join tantargyak on tantargyak.id = temakorok.tantargy_id
+    join ev on ev.id = feladatok.ev_id
+    where tantargyak.id = ${tantargy_id}
+      and ev.szint = ${szint}
+      and ev.ev = ${ev}
+    order by feladatok.id desc
+    `
+
+  // Eltároljuk az eredményt a cache-be
+  lastFilterResult = {
+    timestamp: new Date().toISOString(),
+    params: { tantargy_id, szint, ev },
+    data: rows
+  }
+
+  res.json(rows)
+})
+
+// Utolsó szűrési eredmény visszaadása
+app.get('/api/feladatok/utolso', (req, res) => {
+  if (!lastFilterResult) {
+    return res.status(404).json({ error: 'Még nincs eltárolt szűrési eredmény' })
+  }
+
+  res.json(lastFilterResult)
+})
 /* =========================
    DELETE
 ========================= */
