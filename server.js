@@ -149,49 +149,6 @@ app.post('/api/feladatok', async (req, res) => {
   res.json(result[0])
 })
 
-// Szűrés szint szerint
-app.get('/api/feladatok/szint/:szint', async (req, res) => {
-  const { szint } = req.params
-
-  const rows = await sql`
-    select
-      feladatok.*,
-      forrasok.szoveg as forras_szoveg,
-      temakorok.nev as temakor,
-      tantargyak.nev as tantargy
-    from feladatok
-    left join forrasok on forrasok.id = feladatok.forras_id
-    join temakorok on temakorok.id = feladatok.temakor_id
-    join tantargyak on tantargyak.id = temakorok.tantargy_id
-    where feladatok.szint = ${szint}
-    order by feladatok.id desc
-  `
-
-  res.json(rows)
-})
-
-// Kombinált szűrés: év + szint + témakör
-app.get('/api/feladatok/ev/:ev/szint/:szint/temakor/:temakor_id', async (req, res) => {
-  const { ev, szint, temakor_id } = req.params
-
-  const rows = await sql`
-    select
-      feladatok.*,
-      forrasok.szoveg as forras_szoveg,
-      temakorok.nev as temakor,
-      tantargyak.nev as tantargy
-    from feladatok
-    left join forrasok on forrasok.id = feladatok.forras_id
-    join temakorok on temakorok.id = feladatok.temakor_id
-    join tantargyak on tantargyak.id = temakorok.tantargy_id
-    where feladatok.ev = ${ev} 
-      and feladatok.szint = ${szint}
-      and feladatok.temakor_id = ${temakor_id}
-    order by feladatok.id desc
-  `
-
-  res.json(rows)
-})
 
 //kombinált szűrés: év + szint + tantárgy és annak a visszahívása
 let lastFilterResult = null
@@ -207,6 +164,7 @@ app.get('/api/feladatok/szuro_ev', async (req, res) => {
     select
       feladatok.*,
       forrasok.szoveg as forras_szoveg,
+      forrasok.kep as forras_kep,
       temakorok.nev as temakor,
       tantargyak.nev as tantargy,
       ev.ev as ev,
@@ -219,7 +177,7 @@ app.get('/api/feladatok/szuro_ev', async (req, res) => {
     where tantargyak.id = ${tantargy_id}
       and ev.szint = ${szint}
       and ev.ev = ${ev}
-    order by feladatok.id desc
+    order by feladatok.id asc
     `
 
   // Eltároljuk az eredményt a cache-be
@@ -243,6 +201,7 @@ app.get('/api/feladatok/szuro_temakor', async (req, res) => {
     select
       feladatok.*,
       forrasok.szoveg as forras_szoveg,
+      forrasok.kep as forras_kep,
       temakorok.nev as temakor,
       tantargyak.nev as tantargy,
       ev.ev as ev,
@@ -255,7 +214,7 @@ app.get('/api/feladatok/szuro_temakor', async (req, res) => {
     where tantargyak.id = ${tantargy_id}
       and ev.szint = ${szint}
       and temakorok.id = ${temakor_id}
-    order by feladatok.id desc
+    order by feladatok.id asc
   `
 
   lastFilterResult = {
