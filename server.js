@@ -149,6 +149,19 @@ app.post('/api/feladatok', async (req, res) => {
   res.json(result[0])
 })
 
+app.get('/api/feladatok/szuro_tanfel', async (req, res) => {
+  const rows = await sql`
+    select 
+      tantargyak.nev as tantargy,
+      count(*) as darab
+    from feladatok
+    join temakorok on temakorok.id = feladatok.temakor_id
+    join tantargyak on tantargyak.id = temakorok.tantargy_id
+    group by tantargyak.id, tantargyak.nev
+    order by tantargyak.nev
+  `
+  res.json(rows)
+})
 
 //kombinált szűrés: év + szint + tantárgy és annak a visszahívása
 let lastFilterResult = null

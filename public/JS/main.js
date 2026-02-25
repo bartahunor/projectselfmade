@@ -1,3 +1,4 @@
+const API_URL = 'http://localhost:3000';
 async function includeHTML(id, file) {  
   const response = await fetch(file);
   if (response.ok) {
@@ -46,3 +47,11 @@ document.querySelectorAll('.alap-right a').forEach(link => {
     });
 });
 
+async function loadTantargyFeladatok() {
+    const res = await fetch(`${API_URL}/api/feladatok/szuro_tanfel`)
+    const data = await res.json()
+
+    data.forEach(n => {
+      
+    });
+}
