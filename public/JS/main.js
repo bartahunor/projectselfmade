@@ -11,47 +11,43 @@ async function includeHTML(id, file) {
 window.addEventListener("DOMContentLoaded", async () => {
   await includeHTML("header", "/Pieces/header.html");
   await includeHTML("footer", "/Pieces/footer.html");
-  
-  setActiveMenuItem();
-  // Várunk egy kicsit, hogy a HTML elemek tényleg betöltődjenek
+
+  loadTantargyFeladatok();
 
 });
 
-function setActiveMenuItem() {
-    const currentPage = window.location.pathname.split('/').pop() || 'kezdooldal.html';
-    const menuLinks = document.querySelectorAll('.alap-right .item a');
-    console.log('Aktuális oldal:', currentPage);
-    console.log('Talált linkek:', menuLinks.length);
 
-    menuLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        console.log('Ellenőrzés:', href, '===', currentPage);
-        if (href === currentPage || (currentPage === '' && href === 'kezdooldal.html')) {
-            link.classList.add('active');
-            console.log('✅ Aktív link beállítva:', href);
-        }
-    });
-}
-
-function toggleMenu() {
-    const menu = document.querySelector('.alap-right');
-    const toggle = document.querySelector('.menu-toggle');
-    menu.classList.toggle('active');
-    toggle.classList.toggle('active');
-}
-
-// Bezárja a menüt, ha linkre kattintunk
-document.querySelectorAll('.alap-right a').forEach(link => {
-    link.addEventListener('click', () => {
-        document.querySelector('.alap-right').classList.remove('active');
-    });
-});
 
 async function loadTantargyFeladatok() {
-    const res = await fetch(`${API_URL}/api/feladatok/szuro_tanfel`)
-    const data = await res.json()
+    const resfel = await fetch(`${API_URL}/api/feladatok/szuro_tanfel`)
+    const feladatok = await resfel.json()
 
-    data.forEach(n => {
-      
-    });
+    const restem = await fetch(`${API_URL}/api/temakorok/szuro_tantargyossz`)
+    const temak = await restem.json()
+
+    let infok = new Map()
+    for (const feladat of feladatok) {
+        infok.set(feladat.tantargy, {
+            tantargy: feladat.tantargy,
+            feladat_szam: feladat.darab,
+            temakor_szam: temak.find(t => t.tantargy === feladat.tantargy)?.darab || 'N/A'
+        })
+    }
+
+    for (const [tantargy, info] of infok) {
+        switch (tantargy) {
+            case 'Irodalom':
+                const literatureStats = document.getElementById('literature-stats');
+                if (literatureStats) {
+                    literatureStats.innerHTML = `${info.temakor_szam} témakör • ${info.feladat_szam} feladat`;
+                }
+                break
+            case 'Történelem':
+                const historyStats = document.getElementById('history-stats');
+                if (historyStats) {
+                    historyStats.innerHTML = `${info.temakor_szam} témakör • ${info.feladat_szam} feladat`;
+                }
+                break
+        }
+    }
 }
