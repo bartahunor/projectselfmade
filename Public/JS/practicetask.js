@@ -31,6 +31,7 @@ function getCurrentAnswer(tasktype) {
             const input = taskContainer.querySelector('input, textarea');
             return input ? input.value.trim() || null : null;
         }
+        case 'harom_opcio': 
         case 'feleletvalasztos': {
             const checked = taskContainer.querySelector('input[type="radio"]:checked');
             return checked ? checked.value : null;
@@ -53,7 +54,7 @@ function getCurrentAnswer(tasktype) {
     }
 }
 
-function taskInteractionField(tasktype) {
+function taskInteractionField(tasktype, feladat = null) {
     const taskContainer = document.getElementById('tasktype');
     taskContainer.innerHTML = ''; // Előző tartalom törlése
     
@@ -162,7 +163,48 @@ function taskInteractionField(tasktype) {
             
             taskContainer.appendChild(optionsDiv);
             break;
+        
+        case 'harom_opcio':
+            const numsDiv = document.createElement('div');
+            numsDiv.classList.add('space-y-3');
             
+            const valaszok = feladat?.valaszok ?? [];
+            
+            valaszok.forEach((valasz, index) => {
+                const optionValue = String(index + 1);
+                
+                const label = document.createElement('label');
+                label.classList.add(
+                    'flex', 'items-center', 'p-3', 'border',
+                    'border-slate-200', 'dark:border-slate-700', 'rounded-lg',
+                    'cursor-pointer', 'hover:bg-slate-50', 'dark:hover:bg-slate-800',
+                    'transition-colors', 'focus-within:ring-2',
+                    'focus-within:ring-[#351F5B]', 'focus-within:ring-offset-2',
+                    'focus-within:ring-offset-white', 'dark:focus-within:ring-offset-[#191022]'
+                );
+                
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'question-option';
+                radio.value = optionValue;
+                radio.classList.add(
+                    'w-4', 'h-4', 'text-[#351F5B]',
+                    'focus:ring-[#351F5B]', 'focus:ring-2',
+                    'focus:ring-offset-1', 'dark:bg-slate-800'
+                );
+                
+                const span = document.createElement('span');
+                span.classList.add('ml-3', 'text-slate-700', 'dark:text-slate-300');
+                span.textContent = `${optionValue}. ${valasz}`;
+                
+                label.appendChild(radio);
+                label.appendChild(span);
+                numsDiv.appendChild(label);
+            });
+            
+            taskContainer.appendChild(numsDiv);
+            break;
+
         case 'igaz_hamis':
             const buttonContainer = document.createElement('div');
             buttonContainer.classList.add('flex', 'gap-4');
@@ -386,13 +428,18 @@ function renderFeladat(index) {
         srcContainer.appendChild(placeholder);
     }
         
-    taskInteractionField(feladat.tipus);
+    taskInteractionField(feladat.tipus, feladat);
 }
 
 document.getElementById('nextBtn').addEventListener('click', () => {
     if (currentIndex < feladatok.length - 1) {
         const feladat = feladatok[currentIndex];
+        console.log('Típus:', feladat.tipus);
+        console.log('taskContainer tartalma:', document.getElementById('tasktype').innerHTML);
+        console.log('Checked radio:', document.getElementById('tasktype').querySelector('input[type="radio"]:checked'));
+        
         const valasz = getCurrentAnswer(feladat.tipus);
+        console.log('Válasz:', valasz);
 
         // Mentés a tasks Map-be: kulcs = feladat id, érték = { feladat, valasz }
         tasks.set(feladat.id, {
