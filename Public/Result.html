@@ -29,35 +29,19 @@
 <style>
         body { font-family: 'Lexend', sans-serif; }
         .chart-bar { transition: width 1s ease-in-out; }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(53, 31, 91, 0.1);
+        }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
 <div class="layout-container flex h-full grow flex-col">
 <!-- Top Navigation Bar -->
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 md:px-20 py-3 sticky top-0 z-50">
-<div class="flex items-center gap-4 text-primary dark:text-slate-100">
-<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
-<span class="material-symbols-outlined">analytics</span>
-</div>
-<h2 class="text-xl font-bold leading-tight tracking-tight">HungarExam</h2>
-</div>
-<div class="flex flex-1 justify-end gap-6 items-center">
-<nav class="hidden md:flex items-center gap-8">
-<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Műszerfal</a>
-<a class="text-primary dark:text-white text-sm font-semibold border-b-2 border-primary" href="#">Vizsgatár</a>
-<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Teljesítmény</a>
-<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Beállítások</a>
-</nav>
-<div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2 hidden md:block"></div>
-<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-wide">
-<span>Profil</span>
-</button>
-<div class="bg-primary/10 rounded-full p-0.5 border border-primary/20">
-<img alt="User Profile" class="size-9 rounded-full" data-alt="Student profile portrait icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRPzSah7Vi3uzLwAekdmMiABavvA61ElVoanFgWcnJAK8ILnsRK5V5HRILaf6C1YsOSSFN3yWEtGNPaoMjyQsu8_FCXt2g79VgoSqBLYFW596s64ykKBZgMw9uqzTMurwQMUL-cQgmTJLzZinh_HGJhC7yxf7Dk2KDtb8FOse9PLx3t2nS_N2Geg6NbgKpb51cIpkiLAZ-azNFEqVE5HttE43UijKurPAzWUXlHyk-4qJHQluZbO1m0WfuAD5D_PC4x2Dug8sizfJp"/>
-</div>
-</div>
-</header>
+<div id="header"></div>
 <main class="flex-1 max-w-[1200px] mx-auto w-full px-6 py-8">
 <!-- Breadcrumbs & Header -->
 <nav class="flex items-center gap-2 mb-4 text-sm font-medium text-slate-500">
