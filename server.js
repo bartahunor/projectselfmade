@@ -426,6 +426,126 @@ app.post('/api/auth/login', async (req, res) => {
   }
 })
 
+/* =========================
+   EREDMÉNYEK MENTÉSE
+========================= */
+let lastEredmenyek = null
+
+function ertekelesTasks(tasks) {
+  return tasks.map(({ feladat, valasz }) => {
+    let ertek = 'hibas' // 'helyes', 'reszben_helyes', 'hibas'
+    let pont = 0
+    const maxPont = feladat.pont ?? 1
+
+    switch (feladat.tipus) {
+      case 'rovid_valasz':
+      case 'hosszu_valasz':
+      case 'szamossag': {
+        // helyes_valasz lehet "muzulmán/muszlim/iszlám" formátumú
+        const elfogadott = String(feladat.helyes_valasz)
+          .split('/')
+          .map(v => v.toLowerCase().trim())
+        
+        const valaszNormalt = valasz?.toLowerCase().trim() ?? ''
+        
+        if (elfogadott.some(e => valaszNormalt.includes(e))) {
+          ertek = 'helyes'
+          pont = maxPont
+        }
+        break
+      }
+
+      case 'harom_opcio':
+      case 'feleletvalasztos':
+      case 'igaz_hamis': {
+        if (valasz === String(feladat.helyes_valasz)) {
+          ertek = 'helyes'
+          pont = maxPont
+        }
+        break
+      }
+
+      case 'tobb_valasz': {
+        if (Array.isArray(valasz) && Array.isArray(feladat.helyes_valaszok)) {
+          const helyesSet = feladat.helyes_valaszok.map(String)
+          const valaszSet = valasz.map(String)
+
+          const helyesDb = valaszSet.filter(v => helyesSet.includes(v)).length
+          const hibásDb = valaszSet.filter(v => !helyesSet.includes(v)).length
+          const osszHelyes = helyesSet.length
+
+          
+          pont = helyesDb;
+
+          if (pont === maxPont) {
+            ertek = 'helyes'
+          } else if (pont > 0) {
+            ertek = 'reszben_helyes'
+          } else {
+            ertek = 'hibas'
+          }
+        }
+        break
+      }
+
+      case 'parosito': {
+        if (valasz && typeof valasz === 'object' && feladat.helyes_valasz && typeof feladat.helyes_valasz === 'object') {
+          const parok = Object.entries(feladat.helyes_valasz)
+          const helyesDb = parok.filter(([key, val]) => valasz[key] === String(val)).length
+          const osszDb = parok.length
+
+          if (helyesDb === osszDb) {
+            ertek = 'helyes'
+            pont = maxPont
+          } else if (helyesDb > 0) {
+            ertek = 'reszben_helyes'
+            pont = Math.round((helyesDb / osszDb) * maxPont * 10) / 10
+          }
+        }
+        break
+      }
+
+      default:
+        ertek = 'hibas'
+        pont = 0
+    }
+
+    return {
+      feladat_id: feladat.id,
+      tipus: feladat.tipus,
+      valasz,
+      helyes_valasz: feladat.helyes_valasz ?? feladat.helyes_valaszok,
+      ertek,   // 'helyes' | 'reszben_helyes' | 'hibas'
+      pont,
+      max_pont: maxPont
+    }
+  })
+}
+
+app.post('/api/eredmenyek', (req, res) => {
+  const { tasks } = req.body
+
+  if (!tasks || !Array.isArray(tasks)) {
+    return res.status(400).json({ success: false, message: 'Hiányzó tasks adat!' })
+  }
+
+  const eredmenyek = ertekelesTasks(tasks)
+  const osszpont = eredmenyek.reduce((sum, e) => sum + e.pont, 0)
+  const maxpont = tasks.reduce((sum, { feladat }) => sum + (feladat.pont ?? 1), 0)
+
+  lastEredmenyek = { eredmenyek, osszpont, maxpont }
+  console.log('✅ Eredmények értékelve és eltárolva:', lastEredmenyek)
+
+  res.json({ success: true })
+})
+
+app.get('/api/eredmenyek', (req, res) => {
+  if (!lastEredmenyek) {
+    return res.status(404).json({ success: false, message: 'Még nincs eredmény!' })
+  }
+
+  res.json({ success: true, ...lastEredmenyek })
+})
 /* ========================= 
    SZERVER INDÍTÁS - MINDIG A VÉGÉN!
 ========================= */

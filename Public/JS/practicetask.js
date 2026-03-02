@@ -506,5 +506,28 @@ document.getElementById('prevBtn').addEventListener('click', () => {
         renderFeladat(currentIndex);
     }
 });
-
 loadFeladatok();
+
+document.getElementById('finishBtn').addEventListener('click', async () => {
+    const feladat = feladatok[currentIndex];
+    const valasz = getCurrentAnswer(feladat.tipus);
+
+    tasks.set(feladat.id, { feladat, valasz });
+
+    const tasksArray = Array.from(tasks.values());
+
+    try {
+        const response = await fetch('/api/eredmenyek', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tasks: tasksArray })
+        });
+
+        const data = await response.json();
+        console.log('✅ Válaszok megérkeztek a szerverre:', data);
+        window.location.href = 'Result.html';
+
+    } catch (error) {
+        console.error('❌ Hiba:', error);
+    }
+});
