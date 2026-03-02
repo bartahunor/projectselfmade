@@ -36,6 +36,11 @@ function getCurrentAnswer(tasktype) {
             const checked = taskContainer.querySelector('input[type="radio"]:checked');
             return checked ? checked.value : null;
         }
+        case 'tobb_valasz': {
+            const checked = taskContainer.querySelectorAll('input[type="checkbox"]:checked');
+            if (checked.length === 0) return null;
+            return [...checked].map(el => el.value);
+        }
         case 'igaz_hamis': {
             // A gombokhoz data-value attribútumot használunk (ld. taskInteractionField)
             const selected = taskContainer.querySelector('button[data-selected="true"]');
@@ -203,6 +208,48 @@ function taskInteractionField(tasktype, feladat = null) {
             });
             
             taskContainer.appendChild(numsDiv);
+            break;
+
+        case 'tobb_valasz':
+            const multiDiv = document.createElement('div');
+            multiDiv.classList.add('space-y-3');
+            
+            const multiValaszok = feladat?.valaszok ?? [];
+            
+            multiValaszok.forEach((valasz, index) => {
+                const optionValue = String(index + 1);
+                
+                const label = document.createElement('label');
+                label.classList.add(
+                    'flex', 'items-center', 'p-3', 'border',
+                    'border-slate-200', 'dark:border-slate-700', 'rounded-lg',
+                    'cursor-pointer', 'hover:bg-slate-50', 'dark:hover:bg-slate-800',
+                    'transition-colors', 'focus-within:ring-2',
+                    'focus-within:ring-[#351F5B]', 'focus-within:ring-offset-2',
+                    'focus-within:ring-offset-white', 'dark:focus-within:ring-offset-[#191022]'
+                );
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name = 'question-option';
+                checkbox.value = optionValue;
+                checkbox.classList.add(
+                    'w-4', 'h-4', 'text-[#351F5B]',
+                    'focus:ring-[#351F5B]', 'focus:ring-2',
+                    'focus:ring-offset-1', 'dark:bg-slate-800',
+                    'rounded'  // checkbox-hoz kerekített sarok
+                );
+                
+                const span = document.createElement('span');
+                span.classList.add('ml-3', 'text-slate-700', 'dark:text-slate-300');
+                span.textContent = `${optionValue}. ${valasz}`;
+                
+                label.appendChild(checkbox);
+                label.appendChild(span);
+                multiDiv.appendChild(label);
+            });
+            
+            taskContainer.appendChild(multiDiv);
             break;
 
         case 'igaz_hamis':
