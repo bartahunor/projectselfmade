@@ -512,6 +512,8 @@ function ertekelesTasks(tasks) {
 
     return {
       feladat_id: feladat.id,
+      kerdes: feladat.kerdes,
+      temakor: feladat.temakor,
       tipus: feladat.tipus,
       valasz,
       helyes_valasz: feladat.helyes_valasz ?? feladat.helyes_valaszok,
