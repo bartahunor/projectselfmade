@@ -41,8 +41,8 @@
 <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
 <div class="layout-container flex h-full grow flex-col">
 <!-- Top Navigation Bar -->
-<div id="header"></div>
-<main class="flex-1 max-w-[1200px] mx-auto w-full px-6 py-8">
+<header id="header"></header>
+<main class="flex-1 max-w-[1200px] mx-auto w-full px-6 py-8 pt-32">
 <!-- Breadcrumbs & Header -->
 <nav class="flex items-center gap-2 mb-4 text-sm font-medium text-slate-500">
 <span class="text-primary font-semibold"></span><!-- feladat neve /évszáma/témakör -->
@@ -65,7 +65,7 @@
 <span class="text-slate-500 text-sm font-medium">Összpontszám</span>
 <span class="material-symbols-outlined text-primary">military_tech</span>
 </div>
-<p class="text-3xl font-bold text-slate-900 dark:text-white"></p><!-- Eredmény -->
+<p class="text-3xl font-bold text-slate-900 dark:text-white" id="your-points"></p><!-- Eredmény -->
 <p class="text-emerald-600 text-xs font-bold mt-1 flex items-center gap-1">
                         </p>
 </div>
@@ -83,9 +83,9 @@
 <span class="text-slate-500 text-sm font-medium">Pontosság</span>
 <span class="material-symbols-outlined text-primary">target</span>
 </div>
-<p class="text-3xl font-bold text-slate-900 dark:text-white"></p><!-- Eredmény %ban megadva  -->
+<p class="text-3xl font-bold text-slate-900 dark:text-white" id="accuracy-text"></p><!-- Eredmény %ban megadva  -->
 <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-3">
-<div class="bg-primary h-1.5 rounded-full" style="width: 84%"></div>
+<div class="bg-primary h-1.5 rounded-full" style="width: 84%" id="accuracy-bar"></div>
 </div>
 </div>
 <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
@@ -105,7 +105,7 @@
 <span class="material-symbols-outlined text-primary">insights</span>
 </div>
 <div class="bg-white dark:bg-slate-800 p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-<div class="space-y-6">
+<div class="space-y-6" id="topic-table">
 <!-- Algebra -->
 <div>
 <div class="flex justify-between mb-2">
@@ -285,25 +285,7 @@
 </div>
 </div>
 </main>
-<!-- Footer -->
-<footer class="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 py-10 px-6 mt-12">
-<div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-<div class="flex items-center gap-3">
-<div class="size-6 bg-primary/20 rounded-md flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-sm">analytics</span>
-</div>
-<span class="font-bold text-slate-900 dark:text-white">HungarExam Analytics</span>
-</div>
-<div class="flex gap-8 text-sm text-slate-500 font-medium">
-<a class="hover:text-primary" href="#">Adatvédelem</a>
-<a class="hover:text-primary" href="#">Általános feltételek</a>
-<a class="hover:text-primary" href="#">Kapcsolat</a>
-</div>
-<div class="text-sm text-slate-400">
-                        © 2024 HungarExam. Minden jog fenntartva.
-                    </div>
-</div>
-</footer>
+<footer id="footer"></footer>
 </div>
 </div>
 <script src="/JS/result.js"></script>

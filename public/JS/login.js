@@ -80,7 +80,7 @@ authForm.addEventListener('submit', async function(e){
                 localStorage.setItem('user', JSON.stringify(data.user));
                 alert('Sikeres bejelentkezés!');
                 // Átirányítás
-                window.location.href = 'Tasktype.html';
+                window.location.href = 'Profil.html';
             } else {
                 alert(data.message);
             }
