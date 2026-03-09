@@ -476,28 +476,45 @@ function renderFeladat(index) {
     }
         
     taskInteractionField(feladat.tipus, feladat);
+
+    const nextBtn = document.getElementById('nextBtn')
+    const finishBtn = document.getElementById('finishBtn')
+
+    if (index === feladatok.length - 1) {
+        nextBtn.textContent = 'Vizsga befejezése'
+        finishBtn.classList.add('hidden')
+    } else {
+        nextBtn.textContent = 'Következő'
+        finishBtn.classList.remove('hidden')
+    }
 }
 
-document.getElementById('nextBtn').addEventListener('click', () => {
-    if (currentIndex < feladatok.length - 1) {
-        const feladat = feladatok[currentIndex];
-        console.log('Típus:', feladat.tipus);
-        console.log('taskContainer tartalma:', document.getElementById('tasktype').innerHTML);
-        console.log('Checked radio:', document.getElementById('tasktype').querySelector('input[type="radio"]:checked'));
-        
-        const valasz = getCurrentAnswer(feladat.tipus);
-        console.log('Válasz:', valasz);
+document.getElementById('nextBtn').addEventListener('click', async () => {
+    const feladat = feladatok[currentIndex];
+    const valasz = getCurrentAnswer(feladat.tipus);
+    tasks.set(feladat.id, { feladat, valasz });
 
-        // Mentés a tasks Map-be: kulcs = feladat id, érték = { feladat, valasz }
-        tasks.set(feladat.id, {
-            feladat,
-            valasz,
-        });
-        console.log(tasks);
-
-        currentIndex++;
-        renderFeladat(currentIndex);
+    // Ha utolsó kérdés → ugyanaz mint a finishBtn
+    if (currentIndex === feladatok.length - 1) {
+        const tasksArray = Array.from(tasks.values());
+        try {
+            const response = await fetch('/api/eredmenyek', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tasks: tasksArray })
+            });
+            const data = await response.json();
+            console.log('✅ Válaszok megérkeztek:', data);
+            window.location.href = 'Result.html';
+        } catch (error) {
+            console.error('❌ Hiba:', error);
+        }
+        return
     }
+
+    // Egyébként következő kérdés
+    currentIndex++;
+    renderFeladat(currentIndex);
 });
 
 document.getElementById('prevBtn').addEventListener('click', () => {
