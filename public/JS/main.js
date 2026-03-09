@@ -51,3 +51,22 @@ async function loadTantargyFeladatok() {
         }
     }
 }
+
+function pageRouter(destination) {
+  const isLoggedIn = sessionStorage.getItem('loggedIn') === 'true';
+
+  if (destination === 'profile') {
+    // Belépés gomb → mindig login oldalra küld (ott dől el)
+    sessionStorage.setItem('redirectAfterLogin', 'Profil.html');
+    window.location.href = 'register.html';
+
+  } else if (destination === 'tasks') {
+    // Gyakorlásra fel gomb → bejelentkezés kell
+    if (isLoggedIn) {
+      window.location.href = 'Tasktype.html';
+    } else {
+      sessionStorage.setItem('redirectAfterLogin', 'Tasktype.html');
+      window.location.href = 'register.html';
+    }
+  }
+}

@@ -208,7 +208,7 @@ startBtn.addEventListener("click", () => {
         console.log('Témakör alapú szűrés még nincs implementálva');
     }
 
-    let choiceText = selectedYear ? `Évszám: ${selectedYear}` : `Témakör: ${selectedTopic}`;
+    let choiceTextt = selectedYear ? `Évszám: ${selectedYear}` : `Témakör: ${selectedTopic}`;
     
     console.log('Kiválasztott adatok:', {
         subject,
@@ -217,9 +217,17 @@ startBtn.addEventListener("click", () => {
         topic: selectedTopic
     });
 
+    const levelText = level === 'kozep' ? 'Középszint' : 'Emelt szint';
+    const choiceText = selectedYear ? selectedYear : topicSelect.options[topicSelect.selectedIndex].text;
+    const tesztNev = `${subject} – ${levelText} – ${choiceText}`;
+
+    sessionStorage.setItem('teszt_nev', tesztNev);
+    sessionStorage.setItem('teszt_tantargy_id', sub_id);
+
+    
     window.location.href = 'Tasksite.html';
 
-    alert(`Kiválasztva:\n\nTantárgy: ${subject}\nSzint: ${level}\n${choiceText}`);
+    alert(`Kiválasztva:\n\nTantárgy: ${subject}\nSzint: ${level}\n${choiceTextt}`);
     
     // Itt később átirányíthatsz a feladatok oldalára:
     // window.location.href = `feladatok.html?subject=${subject}&level=${level}&year=${selectedYear || ''}&topic=${selectedTopic || ''}`;

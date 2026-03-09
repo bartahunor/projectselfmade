@@ -76,11 +76,13 @@ authForm.addEventListener('submit', async function(e){
             const data = await response.json();
 
             if(data.success) {
-                // Felhasználó adatok mentése
+                localStorage.setItem('token', data.token);       // token mentése
                 localStorage.setItem('user', JSON.stringify(data.user));
-                alert('Sikeres bejelentkezés!');
-                // Átirányítás
-                window.location.href = 'Profil.html';
+                sessionStorage.setItem('loggedIn', 'true');
+                
+                const redirect = sessionStorage.getItem('redirectAfterLogin') || 'Profil.html';
+                sessionStorage.removeItem('redirectAfterLogin');
+                window.location.href = redirect;
             } else {
                 alert(data.message);
             }

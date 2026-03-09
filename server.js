@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import sql from './db.js'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
@@ -406,15 +407,18 @@ app.post('/api/auth/login', async (req, res) => {
 
     console.log('✅ Sikeres bejelentkezés!')
 
-    // Sikeres bejelentkezés
+    // Sikeres bejelentkezés - ÚJ:
+    const token = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' }
+    )
+
     res.status(200).json({
-      success: true,
-      message: 'Sikeres bejelentkezés!',
-      user: {
-        id: user.id,
-        username: user.felhasznalonev,
-        email: user.email
-      }
+        success: true,
+        message: 'Sikeres bejelentkezés!',
+        token: token,
+        user: { id: user.id, username: user.felhasznalonev, email: user.email }
     })
 
   } catch (error) {
@@ -424,6 +428,21 @@ app.post('/api/auth/login', async (req, res) => {
       message: 'Szerver hiba történt!'
     })
   }
+})
+
+app.get('/api/auth/verify', (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1]
+
+    if (!token) {
+        return res.status(401).json({ valid: false, message: 'Nincs token!' })
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        res.json({ valid: true, user: decoded })
+    } catch (error) {
+        res.json({ valid: false, message: 'Lejárt vagy érvénytelen token!' })
+    }
 })
 
 /* =========================
@@ -514,6 +533,7 @@ function ertekelesTasks(tasks) {
       feladat_id: feladat.id,
       kerdes: feladat.kerdes,
       temakor: feladat.temakor,
+      tantargy: feladat.tantargy,
       tipus: feladat.tipus,
       valasz,
       helyes_valasz: feladat.helyes_valasz ?? feladat.helyes_valaszok,
@@ -548,6 +568,42 @@ app.get('/api/eredmenyek', (req, res) => {
 
   res.json({ success: true, ...lastEredmenyek })
 })
+
+/* =========================
+   TESZTEK MENTÉSE
+========================= */
+
+app.post('/api/tesztek', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1]
+
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'Nincs token!' })
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const felhasznalo_id = decoded.userId
+
+        const { tantargy_id, nev, osszpont, maxpont } = req.body
+
+        if (!tantargy_id || !nev || osszpont == null || maxpont == null) {
+            return res.status(400).json({ success: false, message: 'Hiányzó adatok!' })
+        }
+
+        const result = await sql`
+            INSERT INTO tesztek (felhasznalo_id, tantargy_id, nev, osszpont, maxpont)
+            VALUES (${felhasznalo_id}, ${tantargy_id}, ${nev}, ${osszpont}, ${maxpont})
+            RETURNING *
+        `
+
+        res.status(201).json({ success: true, teszt: result[0] })
+
+    } catch (error) {
+        console.error('❌ Teszt mentési hiba:', error)
+        res.status(500).json({ success: false, message: 'Szerver hiba!' })
+    }
+})
+
 /* ========================= 
    SZERVER INDÍTÁS - MINDIG A VÉGÉN!
 ========================= */

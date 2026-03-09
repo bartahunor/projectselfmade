@@ -197,3 +197,50 @@ function calculateTopicStats() {
         topic_table.appendChild(topic_div);
     });
 }
+
+let saved = false;
+
+async function saveTeszt() {
+    if (saved || !results) return;
+    saved = true;
+
+    const token = localStorage.getItem('token')
+    if (!token) return
+
+    const nev = sessionStorage.getItem('teszt_nev')
+    const tantargy_id = sessionStorage.getItem('teszt_tantargy_id')
+
+    // keepalive: true → böngésző elküldi még ha az oldal már bezárul
+    fetch(`${API_URL}/api/tesztek`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            tantargy_id,
+            nev,
+            osszpont: total_points,
+            maxpont: total_max_points
+        }),
+        keepalive: true   // ← ez a kulcs
+    })
+
+    sessionStorage.removeItem('teszt_nev')
+    sessionStorage.removeItem('teszt_tantargy_id')
+}
+
+// Visszanyíl + tab bezárás + bármilyen navigáció
+window.addEventListener('beforeunload', () => {
+    saveTeszt()
+})
+
+// Linkre / menüpontra kattintás
+document.addEventListener('click', async (e) => {
+    const link = e.target.closest('a[href]');
+    if (link) {
+        e.preventDefault();
+        await saveTeszt();
+        window.location.href = link.href;
+    }
+})
