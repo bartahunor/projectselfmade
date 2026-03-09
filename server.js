@@ -603,7 +603,140 @@ app.post('/api/tesztek', async (req, res) => {
         res.status(500).json({ success: false, message: 'Szerver hiba!' })
     }
 })
+/* ========================= 
+   PROFIL STATISZTIKÁK
+========================= */
+//FELHASZNÁLÓ PONTJAINAK LEKÉRÉSE
+app.get('/api/tesztek/stats', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1]
 
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'Nincs token!' })
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const felhasznalo_id = decoded.userId
+
+        // Összes pont
+        const osszes = await sql`
+            SELECT 
+                COALESCE(SUM(osszpont), 0) as osszes_pont,
+                COALESCE(SUM(maxpont), 0) as osszes_maxpont,
+                COUNT(*) as teszt_szam
+            FROM tesztek
+            WHERE felhasznalo_id = ${felhasznalo_id}
+        `
+
+        // Mai pontok
+        const mai = await sql`
+            SELECT 
+                COALESCE(SUM(osszpont), 0) as mai_pont,
+                COALESCE(SUM(maxpont), 0) as mai_maxpont,
+                COUNT(*) as mai_teszt_szam
+            FROM tesztek
+            WHERE felhasznalo_id = ${felhasznalo_id}
+              AND datum::date = CURRENT_DATE
+        `
+
+        res.json({
+            success: true,
+            osszes: {
+                pont: osszes[0].osszes_pont,
+                maxpont: osszes[0].osszes_maxpont,
+                teszt_szam: osszes[0].teszt_szam
+            },
+            mai: {
+                pont: mai[0].mai_pont,
+                maxpont: mai[0].mai_maxpont,
+                teszt_szam: mai[0].mai_teszt_szam
+            }
+        })
+
+    } catch (error) {
+        console.error('❌ Statisztika lekérési hiba:', error)
+        res.status(500).json({ success: false, message: 'Szerver hiba!' })
+    }
+})
+
+// RANGLISTA HELYEZÉS
+app.get('/api/tesztek/ranglista', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1]
+
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'Nincs token!' })
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const felhasznalo_id = decoded.userId
+
+        const result = await sql`
+            SELECT helyezes, osszes_pont, teszt_szam FROM (
+                SELECT 
+                    felhasznalo_id,
+                    SUM(osszpont) as osszes_pont,
+                    COUNT(*) as teszt_szam,
+                    RANK() OVER (ORDER BY SUM(osszpont) DESC) as helyezes
+                FROM tesztek
+                GROUP BY felhasznalo_id
+            ) as ranglista
+            WHERE felhasznalo_id = ${felhasznalo_id}
+        `
+
+        // Ha még nincs tesztje
+        if (result.length === 0) {
+            return res.json({ success: true, helyezes: null, osszes_pont: 0, teszt_szam: 0 })
+        }
+
+        res.json({
+            success: true,
+            helyezes: result[0].helyezes,
+            osszes_pont: result[0].osszes_pont,
+            teszt_szam: result[0].teszt_szam
+        })
+
+    } catch (error) {
+        console.error('❌ Ranglista hiba:', error)
+        res.status(500).json({ success: false, message: 'Szerver hiba!' })
+    }
+})
+
+
+// FELHASZNÁLÓ TESZTJEINEK ADATAI
+app.get('/api/tesztek/elozmenyek', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1]
+
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'Nincs token!' })
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const felhasznalo_id = decoded.userId
+
+        const result = await sql`
+            SELECT 
+                tesztek.id,
+                tesztek.nev,
+                tesztek.osszpont,
+                tesztek.maxpont,
+                ROUND((tesztek.osszpont / tesztek.maxpont) * 100) as szazalek,
+                tesztek.datum,
+                tantargyak.nev as tantargy
+            FROM tesztek
+            JOIN tantargyak ON tantargyak.id = tesztek.tantargy_id
+            WHERE tesztek.felhasznalo_id = ${felhasznalo_id}
+            ORDER BY tesztek.datum DESC
+        `
+
+        res.json({ success: true, tesztek: result })
+
+    } catch (error) {
+        console.error('❌ Előzmények lekérési hiba:', error)
+        res.status(500).json({ success: false, message: 'Szerver hiba!' })
+    }
+})
 /* ========================= 
    SZERVER INDÍTÁS - MINDIG A VÉGÉN!
 ========================= */
