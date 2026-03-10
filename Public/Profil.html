@@ -47,7 +47,7 @@
 </div>
 <div>
 <h2 class="text-2xl font-bold text-slate-900 dark:text-white leading-tight" id="user"></h2><!-- Felhasználó név -->
-<p class="text-slate-500 dark:text-slate-400"></p><!-- Email cím -->
+<p class="text-slate-500 dark:text-slate-400" id="user-email"></p><!-- Email cím -->
 <div class="mt-2 flex gap-2">
 </div>
 </div>
@@ -139,71 +139,42 @@
 </div>
 </div>
 <!-- Right: Errors & Explanations -->
-<div class="lg:col-span-1 flex flex-col bg-white dark:bg-slate-900 rounded-xl border border-primary/5 shadow-sm h-[calc(100vh-200px)] sticky top-[100px]">
-<div class="p-6 border-b border-primary/5 bg-primary/5 rounded-t-xl">
-<h3 class="text-lg font-bold text-primary flex items-center gap-2">
-<span class="material-symbols-outlined">error</span>
-                        Hibák és magyarázatok
-                    </h3>
-<p class="text-xs text-slate-500 mt-1">Összesen 42 elvétett kérdés</p>
-</div>
-<div class="flex-1 overflow-y-auto p-6 space-y-6">
-<!-- Error Item 1 -->
-<div class="space-y-3">
-<div class="flex items-start gap-2">
-<span class="mt-1 flex size-5 shrink-0 items-center justify-center rounded bg-red-100 text-[10px] font-bold text-red-600">Q1</span>
-<p class="text-sm font-semibold text-slate-900 dark:text-white leading-relaxed">Melyik évben volt a mohácsi vész?</p>
-</div>
-<div class="ml-7 space-y-2">
-<p class="text-xs text-red-500 line-through">Válaszod: 1541</p>
-<p class="text-xs font-bold text-emerald-600">Helyes válasz: 1526</p>
-<div class="rounded-lg bg-primary/5 p-3 text-xs text-slate-600 leading-relaxed dark:text-slate-400 border-l-2 border-primary">
-<strong class="text-primary block mb-1">Magyarázat:</strong>
-                                A mohácsi csata 1526. augusztus 29-én zajlott le, ahol a magyar sereg döntő vereséget szenvedett az Oszmán Birodalomtól. 1541-ben Buda török kézre kerülése történt.
-                            </div>
-</div>
-</div>
-<!-- Error Item 2 -->
-<div class="space-y-3">
-<div class="flex items-start gap-2">
-<span class="mt-1 flex size-5 shrink-0 items-center justify-center rounded bg-red-100 text-[10px] font-bold text-red-600">Q14</span>
-<p class="text-sm font-semibold text-slate-900 dark:text-white leading-relaxed">Mennyi az x értéke: 2x + 10 = 20?</p>
-</div>
-<div class="ml-7 space-y-2">
-<p class="text-xs text-red-500 line-through">Válaszod: 10</p>
-<p class="text-xs font-bold text-emerald-600">Helyes válasz: 5</p>
-<div class="rounded-lg bg-primary/5 p-3 text-xs text-slate-600 leading-relaxed dark:text-slate-400 border-l-2 border-primary">
-<strong class="text-primary block mb-1">Magyarázat:</strong>
-                                Rendezni kell az egyenletet: 2x = 20 - 10, azaz 2x = 10. Mindkét oldalt elosztva kettővel kapjuk az x = 5 eredményt.
-                            </div>
-</div>
-</div>
-<!-- Error Item 3 -->
-<div class="space-y-3">
-<div class="flex items-start gap-2">
-<span class="mt-1 flex size-5 shrink-0 items-center justify-center rounded bg-red-100 text-[10px] font-bold text-red-600">Q5</span>
-<p class="text-sm font-semibold text-slate-900 dark:text-white leading-relaxed">Ki írta a 'Toldi' című művet?</p>
-</div>
-<div class="ml-7 space-y-2">
-<p class="text-xs text-red-500 line-through">Válaszod: Petőfi Sándor</p>
-<p class="text-xs font-bold text-emerald-600">Helyes válasz: Arany János</p>
-<div class="rounded-lg bg-primary/5 p-3 text-xs text-slate-600 leading-relaxed dark:text-slate-400 border-l-2 border-primary">
-<strong class="text-primary block mb-1">Magyarázat:</strong>
-                                A Toldi trilógia Arany János leghíresebb elbeszélő költeménye, melyet 1846-ban írt a Kisfaludy Társaság pályázatára.
-                            </div>
-</div>
-</div>
-</div>
-<div class="p-4 border-t border-primary/5 text-center">
-<button class="text-sm font-bold text-primary hover:text-primary/80 transition-colors flex items-center justify-center gap-1 w-full">
-                        Mutass többet
-                        <span class="material-symbols-outlined text-lg">expand_more</span>
-</button>
-</div>
-</div>
+<div class="lg:col-span-1 flex flex-col bg-white dark:bg-slate-900 rounded-xl border border-primary/5 shadow-sm sticky top-[100px]">
+    <div class="p-6 border-b border-primary/5 bg-primary/5 rounded-t-xl">
+        <h3 class="text-lg font-bold text-primary flex items-center gap-2">
+            <span class="material-symbols-outlined">calendar_month</span>
+            Aktivitás naptár
+        </h3>
+        <p class="text-xs text-slate-500 mt-1" id="aktiv-napok-szam">Betöltés...</p>
+    </div>
+    <div class="p-6">
+        <!-- Hónap navigáció -->
+        <div class="flex items-center justify-between mb-4">
+            <button id="prev-month" class="p-1 rounded-lg hover:bg-primary/10 transition-colors">
+                <span class="material-symbols-outlined text-primary">chevron_left</span>
+            </button>
+            <h4 class="font-bold text-slate-900 dark:text-white" id="month-title"></h4>
+            <button id="next-month" class="p-1 rounded-lg hover:bg-primary/10 transition-colors">
+                <span class="material-symbols-outlined text-primary">chevron_right</span>
+            </button>
+        </div>
+        <!-- Napok fejléc -->
+        <div class="grid grid-cols-7 mb-2">
+            <div class="text-center text-xs font-bold text-slate-400 py-1">H</div>
+            <div class="text-center text-xs font-bold text-slate-400 py-1">K</div>
+            <div class="text-center text-xs font-bold text-slate-400 py-1">Sze</div>
+            <div class="text-center text-xs font-bold text-slate-400 py-1">Cs</div>
+            <div class="text-center text-xs font-bold text-slate-400 py-1">P</div>
+            <div class="text-center text-xs font-bold text-slate-400 py-1">Szo</div>
+            <div class="text-center text-xs font-bold text-slate-400 py-1">V</div>
+        </div>
+        <!-- Naptár grid -->
+        <div class="grid grid-cols-7 gap-1" id="calendar-grid"></div>
+    </div>
 </div>
 </main>
 <footer id="footer"></footer>
+<script src="/JS/header.js"></script>
 <script src="/JS/profil.js"></script>
 <script src="/JS/authCheck.js"></script>
 </body></html>

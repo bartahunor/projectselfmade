@@ -5,9 +5,9 @@ let results = null;
 let total_points = 0;
 let total_max_points = 0;
 window.addEventListener("DOMContentLoaded", async () => {
-  await includeHTML("header", "/Pieces/header.html");
-  await includeHTML("footer", "/Pieces/footer.html");
-
+    await includeHTML("header", "/Pieces/header.html");
+    await includeHTML("footer", "/Pieces/footer.html");
+    renderAuthButton();
     loadResults();
 });
 

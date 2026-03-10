@@ -227,7 +227,7 @@ startBtn.addEventListener("click", () => {
     
     window.location.href = 'Tasksite.html';
 
-    alert(`Kiválasztva:\n\nTantárgy: ${subject}\nSzint: ${level}\n${choiceTextt}`);
+    
     
     // Itt később átirányíthatsz a feladatok oldalára:
     // window.location.href = `feladatok.html?subject=${subject}&level=${level}&year=${selectedYear || ''}&topic=${selectedTopic || ''}`;

@@ -737,6 +737,28 @@ app.get('/api/tesztek/elozmenyek', async (req, res) => {
         res.status(500).json({ success: false, message: 'Szerver hiba!' })
     }
 })
+
+// AKTÍV NAPOK LEKÉRÉSE
+app.get('/api/tesztek/aktivnapok', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1]
+    if (!token) return res.status(401).json({ success: false })
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const felhasznalo_id = decoded.userId
+
+        const result = await sql`
+            SELECT DISTINCT datum::date as nap
+            FROM tesztek
+            WHERE felhasznalo_id = ${felhasznalo_id}
+            ORDER BY nap DESC
+        `
+
+        res.json({ success: true, napok: result.map(r => r.nap) })
+    } catch (error) {
+        res.status(500).json({ success: false })
+    }
+})
 /* ========================= 
    SZERVER INDÍTÁS - MINDIG A VÉGÉN!
 ========================= */
