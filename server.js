@@ -177,6 +177,36 @@ app.get('/api/feladatok/szuro_tanfel', async (req, res) => {
   res.json(rows)
 })
 
+// Helper: táblázatos sorok hozzáfűzése a feladatokhoz
+async function enrichWithTablazatos(rows) {
+  // Csak a táblázatos feladatok id-it gyűjtjük ki
+  const tablazatosIds = rows
+    .filter(r => r.tipus === 'tablazatos_feladat')
+    .map(r => r.id)
+
+  if (tablazatosIds.length === 0) return rows
+
+  const tablazatosRows = await sql`
+    select *
+    from tablazatos_feladatok
+    where feladat_id = any(${tablazatosIds})
+    order by feladat_id, id asc
+  `
+
+  // Feladat id alapján csoportosítjuk
+  const tablazatosByFeladatId = tablazatosRows.reduce((acc, sor) => {
+    if (!acc[sor.feladat_id]) acc[sor.feladat_id] = []
+    acc[sor.feladat_id].push(sor)
+    return acc
+  }, {})
+
+  // Hozzáfűzzük minden feladathoz
+  return rows.map(r => ({
+    ...r,
+    tablazatos_sorok: tablazatosByFeladatId[r.id] ?? []
+  }))
+}
+
 //kombinált szűrés: év + szint + tantárgy és annak a visszahívása
 let lastFilterResult = null
 
@@ -208,13 +238,14 @@ app.get('/api/feladatok/szuro_ev', async (req, res) => {
     `
 
   // Eltároljuk az eredményt a cache-be
+  const enrichedRows = await enrichWithTablazatos(rows)
   lastFilterResult = {
     timestamp: new Date().toISOString(),
     params: { tantargy_id, szint, ev },
-    data: rows
+    data: enrichedRows
   }
 
-  res.json(rows)
+  res.json(enrichedRows)
 })
 
 app.get('/api/feladatok/szuro_temakor', async (req, res) => {
@@ -243,14 +274,14 @@ app.get('/api/feladatok/szuro_temakor', async (req, res) => {
       and temakorok.id = ${temakor_id}
     order by feladatok.id asc
   `
-
+  const enrichedRows = await enrichWithTablazatos(rows)
   lastFilterResult = {
     timestamp: new Date().toISOString(),
     params: { tantargy_id, szint, temakor_id },
-    data: rows
+    data: enrichedRows
   }
 
-  res.json(rows)
+  res.json(enrichedRows)
 })
 
 // Utolsó szűrési eredmény visszaadása

@@ -54,6 +54,15 @@ function getCurrentAnswer(tasktype) {
             });
             return result;
         }
+        case 'tablazatos_feladat': {
+            const inputs = taskContainer.querySelectorAll('input[data-oszlop]');
+            const result = {};
+            inputs.forEach(input => {
+                const key = `${input.dataset.sor}_${input.dataset.oszlop}`;
+                result[key] = input.value.trim() || null;
+            });
+            return Object.keys(result).length > 0 ? result : null;
+        }
         default:
             return null;
     }
@@ -395,7 +404,85 @@ function taskInteractionField(tasktype, feladat = null) {
             numberContainer.appendChild(unit);
             taskContainer.appendChild(numberContainer);
             break;
-            
+        case 'tablazatos_feladat': {
+            const sorok = feladat?.tablazatos_sorok ?? [];
+            if (sorok.length === 0) break;
+
+            // Oszlopfejlécek az első sorból
+            const elsoSor = sorok[0];
+            const oszlopok = ['oszlop1', 'oszlop2', 'oszlop3', 'oszlop4', 'oszlop5']
+                .filter(o => elsoSor[`${o}_nev`] != null);
+
+            const table = document.createElement('table');
+            table.classList.add('w-full', 'border-collapse', 'text-sm');
+
+            // Fejléc sor
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            oszlopok.forEach(o => {
+                const th = document.createElement('th');
+                th.textContent = elsoSor[`${o}_nev`];
+                th.classList.add(
+                    'px-4', 'py-2', 'text-left', 'font-medium',
+                    'border', 'border-slate-300', 'dark:border-slate-600',
+                    'bg-slate-100', 'dark:bg-slate-700',
+                    'text-slate-700', 'dark:text-slate-200'
+                );
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Adatsorok
+            const tbody = document.createElement('tbody');
+            sorok.forEach((sor, sorIndex) => {
+                const tr = document.createElement('tr');
+                tr.classList.add(
+                    sorIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50',
+                    'dark:' + (sorIndex % 2 === 0 ? 'bg-slate-800' : 'bg-slate-750')
+                );
+
+                oszlopok.forEach(o => {
+                    const td = document.createElement('td');
+                    td.classList.add(
+                        'px-4', 'py-2',
+                        'border', 'border-slate-300', 'dark:border-slate-600'
+                    );
+
+                    const ertek = sor[`${o}_ertek`];
+                    const kitoltendo = ertek?.startsWith('§');
+
+                    if (kitoltendo) {
+                        // Üres cella → input mező
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.placeholder = '...';
+                        input.dataset.sor = sor.id;
+                        input.dataset.oszlop = o;
+                        input.dataset.helyes = ertek.slice(1); // § levágva, ellenőrzéshez
+                        input.classList.add(
+                            'w-full', 'px-2', 'py-1',
+                            'border', 'border-slate-300', 'dark:border-slate-500',
+                            'rounded', 'dark:bg-slate-700', 'dark:text-white',
+                            'focus:outline-none', 'focus:ring-2', 'focus:ring-[#351F5B]'
+                        );
+                        td.appendChild(input);
+                    } else {
+                        // Előre kitöltött → sima szöveg
+                        td.textContent = ertek ?? '';
+                        td.classList.add('text-slate-700', 'dark:text-slate-300');
+                    }
+
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+
+            table.appendChild(tbody);
+            taskContainer.appendChild(table);
+            break;
+        }
         default:
             const placeholder = document.createElement('div');
             placeholder.classList.add(

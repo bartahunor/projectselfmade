@@ -1,7 +1,14 @@
 supabase database password: SBIffO4MQFGmd1mR
 
 üzenetek ötlet: https://uiverse.io/Cybercom682/empty-wolverine-58
+Hero ötletek:
+https://21st.dev/community/components/tommyjepsen/animated-hero/default
+https://21st.dev/community/components/kokonutd/background-paths/default
+https://21st.dev/community/components/victorwelander/gooey-text-morphing/default
+https://21st.dev/community/components/erikx/sign-in-flow-1/default
+https://21st.dev/reapollo/hero-ascii-one/default
+https://21st.dev/reapollo/hero-ascii/default
 
 Problémás kérdések: 
-Kérdés skip: [4.] [5c 6a 8 9] [7c 7d]
+Kérdés skip: [4.]  [7c 7d]
 
