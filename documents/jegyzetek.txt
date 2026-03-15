@@ -12,3 +12,8 @@ https://21st.dev/reapollo/hero-ascii/default
 Problémás kérdések: 
 Kérdés skip: [4.]  [7c 7d]
 
+Robot Framework setup:
+1. pip install robotframework
+2. pip install robotframework-selenium2library
+3. A VS Code-ban: `Ctrl+Shift+X` → keress rá: `Robot Framework Language Server`
+
