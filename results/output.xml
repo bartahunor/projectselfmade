@@ -1,33 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.4.2 (Python 3.12.10 on win32)" generated="2026-03-15T20:41:25.202911" rpa="false" schemaversion="5">
-<suite id="s1" name="Projectselfmade" source="C:\Sajat\informatika\c#\projectselfmade">
-<suite id="s1-s1" name="Tests" source="C:\Sajat\informatika\c#\projectselfmade\tests">
-<suite id="s1-s1-s1" name="LoginValidation" source="C:\Sajat\informatika\c#\projectselfmade\tests\LoginValidation.robot">
-<test id="s1-s1-s1-t1" name="Valid Login" line="5">
+<robot generator="Robot 7.4.2 (Python 3.13.5 on win32)" generated="2026-03-16T09:29:31.723902" rpa="false" schemaversion="5">
+<suite id="s1" name="Projectselfmade" source="C:\projectselfmade">
+<suite id="s1-s1" name="Tests" source="C:\projectselfmade\tests">
+<suite id="s1-s1-s1" name="LoginValidation" source="C:\projectselfmade\tests\LoginValidation.robot">
+<test id="s1-s1-s1-t1" name="Login with valid credentials" line="45">
 <kw name="Open Browser" owner="Selenium2Library">
-<msg time="2026-03-15T20:41:25.471133" level="INFO">Opening browser 'chrome' to base url 'http://localhost:3000/homepage.html'.</msg>
-<arg>http://localhost:3000/homepage.html</arg>
+<msg time="2026-03-16T09:29:31.947838" level="INFO">Opening browser 'chrome' to base url 'http://localhost:3000/register.html'.</msg>
+<arg>http://localhost:3000/register.html</arg>
 <arg>chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2026-03-15T20:41:25.471133" elapsed="1.566324"/>
+<status status="PASS" start="2026-03-16T09:29:31.947292" elapsed="1.146224"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
-<msg time="2026-03-15T20:41:29.039213" level="INFO">Slept 2 seconds.</msg>
+<msg time="2026-03-16T09:29:35.095118" level="INFO">Slept 2 seconds.</msg>
 <arg>2s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2026-03-15T20:41:27.037457" elapsed="2.002263"/>
+<status status="PASS" start="2026-03-16T09:29:33.094035" elapsed="2.002019"/>
 </kw>
-<kw name="Close Browser" owner="Selenium2Library">
+<kw name="Input Text" owner="Selenium2Library">
+<msg time="2026-03-16T09:29:35.099442" level="INFO">Typing text 'keseru.fruzsina@diak.szbi-pg.hu' into text field 'id=email'.</msg>
+<arg>id=email</arg>
+<arg>keseru.fruzsina@diak.szbi-pg.hu</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-16T09:29:35.097649" elapsed="0.165512"/>
+</kw>
+<kw name="Input Text" owner="Selenium2Library">
+<msg time="2026-03-16T09:29:35.263767" level="INFO">Typing text 'Fruzsina2006' into text field 'id=password'.</msg>
+<arg>id=password</arg>
+<arg>Fruzsina2006</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-16T09:29:35.263470" elapsed="0.093052"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="Selenium2Library">
+<arg>id=submit-btn</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-16T09:29:35.357042" elapsed="0.019669"/>
+</kw>
+<kw name="Scroll Element Into View" owner="Selenium2Library">
+<arg>id=submit-btn</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="PASS" start="2026-03-16T09:29:35.377111" elapsed="0.292787"/>
+</kw>
+<kw name="Click Button" owner="Selenium2Library">
+<msg time="2026-03-16T09:29:35.670701" level="INFO">Clicking button 'id=submit-btn'.</msg>
+<arg>id=submit-btn</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-16T09:29:35.670354" elapsed="0.117066"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-16T09:29:36.791847" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-16T09:29:35.788609" elapsed="1.004836"/>
+</kw>
+<kw name="Location Should Be" owner="Selenium2Library">
+<msg time="2026-03-16T09:29:36.811990" level="INFO">Current location is 'http://localhost:3000/Profil.html'.</msg>
+<arg>http://localhost:3000/Profil.html</arg>
+<doc>Verifies that the current URL is exactly ``url``.</doc>
+<status status="PASS" start="2026-03-16T09:29:36.794936" elapsed="0.017471"/>
+</kw>
+<kw name="Close Browser" owner="Selenium2Library" type="TEARDOWN">
 <doc>Closes the current browser.</doc>
-<status status="PASS" start="2026-03-15T20:41:29.039720" elapsed="2.281638"/>
+<status status="PASS" start="2026-03-16T09:29:36.813608" elapsed="2.377361"/>
 </kw>
-<status status="PASS" start="2026-03-15T20:41:25.469017" elapsed="5.852341"/>
+<status status="PASS" start="2026-03-16T09:29:31.943705" elapsed="7.248265"/>
 </test>
-<status status="PASS" start="2026-03-15T20:41:25.254417" elapsed="6.074189"/>
+<status status="PASS" start="2026-03-16T09:29:31.770314" elapsed="7.433919"/>
 </suite>
-<status status="PASS" start="2026-03-15T20:41:25.246538" elapsed="6.087204"/>
+<status status="PASS" start="2026-03-16T09:29:31.764211" elapsed="7.444295"/>
 </suite>
-<status status="PASS" start="2026-03-15T20:41:25.217675" elapsed="6.130441"/>
+<status status="PASS" start="2026-03-16T09:29:31.731013" elapsed="7.484282"/>
 </suite>
 <statistics>
 <total>
