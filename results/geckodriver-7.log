@@ -1,0 +1,30 @@
+1773643623273	geckodriver	INFO	Listening on 127.0.0.1:65477
+1773643626349	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "65478" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\KESERU~1\\AppData\\Local\\Temp\\rust_mozprofiley7Wp68"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+Dynamically enable window occlusion 0
+1773643626642	Marionette	INFO	Marionette enabled
+1773643626711	Marionette	INFO	Listening on port 50170
+WebDriver BiDi listening on ws://127.0.0.1:65478
+Read port: 50170
+1773643626855	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://localhost:3000/register.html" [Exception... "Failure"  nsresult: "0x80004005 (NS_ERROR_FAILURE)"  location: "<unknown>"  data: no]
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://localhost:3000/homepage.html" [Exception... "Failure"  nsresult: "0x80004005 (NS_ERROR_FAILURE)"  location: "<unknown>"  data: no]
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://localhost:3000/register.html" [Exception... "Failure"  nsresult: "0x80004005 (NS_ERROR_FAILURE)"  location: "<unknown>"  data: no]
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://localhost:3000/homepage.html" [Exception... "Failure"  nsresult: "0x80004005 (NS_ERROR_FAILURE)"  location: "<unknown>"  data: no]
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://localhost:3000/register.html" [Exception... "Failure"  nsresult: "0x80004005 (NS_ERROR_FAILURE)"  location: "<unknown>"  data: no]
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://localhost:3000/homepage.html" [Exception... "Failure"  nsresult: "0x80004005 (NS_ERROR_FAILURE)"  location: "<unknown>"  data: no]
+JavaScript error: resource:///modules/sessionstore/SessionStore.sys.mjs, line 2840: NotFoundError: No such JSProcessActor 'DevToolsProcess'
+JavaScript error: resource:///modules/sessionstore/SessionStore.sys.mjs, line 2840: NotFoundError: No such JSProcessActor 'DevToolsProcess'
+JavaScript error: resource:///modules/sessionstore/SessionStore.sys.mjs, line 2840: NotFoundError: No such JSProcessActor 'DevToolsProcess'
+1773644071631	Marionette	INFO	Stopped listening on port 50170
+Dynamically enable window occlusion 1
+console.error: (new TypeError("NetworkError when attempting to fetch resource.", ""))
+console.error: (new Error("OHTTP was configured for https://ads.mozilla.org/v1/delete_user but we couldn't fetch a valid config", "moz-src:///browser/modules/ContextId.sys.mjs", 234))
+console.error: "Failed to fetch https://spocs.getpocket.com/user:" "NetworkError when attempting to fetch resource."
+console.warn: TopSitesFeed: Failed to fetch data from MARS server: NetworkError when attempting to fetch resource.
+JavaScript error: resource://gre/modules/ObliviousHTTP.sys.mjs, line 117: NS_ERROR_XPC_CANT_CONVERT_PRIMITIVE_TO_ARRAY: Cannot convert primitive JavaScript value into an array arg 2 [nsIObliviousHttpService.newChannel]
+console.error: "Error in worker resource://devtools/client/shared/source-map-loader/worker.js" ": "
+JavaScript error: resource:///modules/AboutNewTab.sys.mjs, line 242: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+JavaScript error: resource://services-settings/RemoteSettingsClient.sys.mjs, line 85: Error: Unknown callback
+JavaScript error: resource://gre/modules/JSONFile.sys.mjs, line 432: TypeError: can't access property "toJSONSafe", this._data is null
