@@ -56,11 +56,17 @@ function getCurrentAnswer(tasktype) {
         }
         case 'tablazatos_feladat': {
             const inputs = taskContainer.querySelectorAll('input[data-oszlop]');
+            if (inputs.length === 0) return null;
+
             const result = {};
             inputs.forEach(input => {
                 const key = `${input.dataset.sor}_${input.dataset.oszlop}`;
-                result[key] = input.value.trim() || null;
+                result[key] = {
+                    beirt: input.value.trim() || null,
+                    helyes: input.dataset.helyes?.trim() || null
+                };
             });
+
             return Object.keys(result).length > 0 ? result : null;
         }
         default:

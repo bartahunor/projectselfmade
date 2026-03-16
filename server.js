@@ -554,6 +554,31 @@ function ertekelesTasks(tasks) {
         }
         break
       }
+      case 'tablazatos_feladat': {
+        if (valasz && typeof valasz === 'object') {
+          const cellak = Object.entries(valasz)
+          const osszDb = cellak.length
+
+          feladat.helyes_valasz = cellak.map(([, { helyes }]) => helyes ?? '—').join(', ')
+          valasz = cellak.map(([, { beirt }]) => beirt ?? '—').join(', ')
+
+          const helyesDb = cellak.filter(([, { beirt, helyes }]) => {
+            if (!helyes || !beirt) return false
+            return beirt.toLowerCase().trim() === helyes.toLowerCase().trim()
+          }).length
+
+          pont = Math.round((helyesDb / osszDb) * maxPont * 10) / 10
+
+          if (helyesDb === osszDb) {
+            ertek = 'helyes'
+          } else if (helyesDb > 0) {
+            ertek = 'reszben_helyes'
+          } else {
+            ertek = 'hibas'
+          }
+        }
+        break
+      }
 
       default:
         ertek = 'hibas'
