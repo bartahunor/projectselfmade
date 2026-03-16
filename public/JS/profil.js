@@ -206,3 +206,9 @@ document.addEventListener('click', (e) => {
         renderCalendar()
     }
 })
+
+function logout() {
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+  window.location.href = '/homepage.html'
+}
