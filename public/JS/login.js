@@ -11,6 +11,7 @@ const passwordInput = authForm.password;
 
 let isLogin = true;
 
+
 // Form váltás (Bejelentkezés <-> Regisztráció)
 switchLink.addEventListener('click', (e) => {
     e.preventDefault();
@@ -42,6 +43,10 @@ function switchLinkClick(e) {
     switchLink.click();
 }
 
+const urlParams = new URLSearchParams(window.location.search)
+if (urlParams.get('mode') === 'register') {
+    switchLink.click()
+}
 // **Bejelentkezés gomb működés**
 // Form submit
 const API_URL = 'http://localhost:3000';

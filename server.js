@@ -556,29 +556,39 @@ function ertekelesTasks(tasks) {
       }
       case 'tablazatos_feladat': {
         if (valasz && typeof valasz === 'object') {
-          const cellak = Object.entries(valasz)
-          const osszDb = cellak.length
+            const cellak = Object.entries(valasz)
+            const osszDb = cellak.length
 
-          feladat.helyes_valasz = cellak.map(([, { helyes }]) => helyes ?? '—').join(', ')
-          valasz = cellak.map(([, { beirt }]) => beirt ?? '—').join(', ')
+            feladat.helyes_valasz = cellak.map(([, { helyes }]) => helyes ?? '—').join(', ')
+            valasz = cellak.map(([, { beirt }]) => beirt ?? '—').join(', ')
 
-          const helyesDb = cellak.filter(([, { beirt, helyes }]) => {
-            if (!helyes || !beirt) return false
-            return beirt.toLowerCase().trim() === helyes.toLowerCase().trim()
-          }).length
+            const helyesDb = cellak.filter(([, { beirt, helyes }]) => {
+                if (!helyes || !beirt) return false
+                
+                const elfogadott = String(helyes)
+                    .split('/')
+                    .map(v => v.toLowerCase().trim())
+                
+                const beirtNormalt = beirt.toLowerCase().trim()
+                
+                return elfogadott.some(e => beirtNormalt.includes(e))
+            }).length
 
-          pont = Math.round((helyesDb / osszDb) * maxPont * 10) / 10
-
-          if (helyesDb === osszDb) {
-            ertek = 'helyes'
-          } else if (helyesDb > 0) {
-            ertek = 'reszben_helyes'
-          } else {
-            ertek = 'hibas'
-          }
+            if (helyesDb === osszDb) {
+                // Minden helyes → teljes pont
+                ertek = 'helyes'
+                pont = maxPont
+            } else if (helyesDb > 0) {
+                // Arányos, lefelé kerekített egész pont
+                ertek = 'reszben_helyes'
+                pont = Math.floor((helyesDb / osszDb) * maxPont)
+            } else {
+                ertek = 'hibas'
+                pont = 0
+            }
         }
         break
-      }
+    }
 
       default:
         ertek = 'hibas'

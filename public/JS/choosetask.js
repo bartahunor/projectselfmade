@@ -197,13 +197,13 @@ function checkReady() {
 }
 
 // Start gomb kattintás
-startBtn.addEventListener("click", () => {
+startBtn.addEventListener("click", async() => {
     if (startBtn.disabled) return; 
     // Csak ha év van kiválasztva
     if (selectedYear) {
-        taskParamsSenderYear(sub_id, level, selectedYear);
+        await taskParamsSenderYear(sub_id, level, selectedYear);
     } else if (selectedTopic) {
-        taskParamsSenderTopic(sub_id, level, selectedTopic);  // ← selectedTopic most már id
+        await taskParamsSenderTopic(sub_id, level, selectedTopic);  // ← selectedTopic most már id
     } else {
         console.log('Témakör alapú szűrés még nincs implementálva');
     }
